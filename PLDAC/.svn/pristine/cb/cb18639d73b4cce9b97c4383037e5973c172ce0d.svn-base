@@ -1,0 +1,20 @@
+package lfi.fuzzy.ffs.vocabulary;
+
+import java.io.BufferedReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.tools.RewindableCSVParser;
+
+public class LinksParser {
+	private BufferedReader parser;
+	
+	public ArrayList<LingVar<?>> readLinks(String filename, HashMap<String,LingVar<?>>lin){
+		RewindableCSVParser rparser = new RewindableCSVParser(filename);
+		parser = rparser.getCSVParser();
+		return null; 
+		
+	}
+
+}

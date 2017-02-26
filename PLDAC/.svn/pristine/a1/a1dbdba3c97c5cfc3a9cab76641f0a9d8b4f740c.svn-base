@@ -1,0 +1,40 @@
+package lfi.fuzzy.summaries;
+
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.linguistic.Quantifier;
+
+public abstract class QPSummary {
+	private Quantifier q;
+	private LingVar<?> p;
+	private int modP;
+	private double truthVal;
+	
+	
+	
+	protected abstract String getQBloc();
+	
+	protected abstract String getPBloc();
+	
+	public Quantifier getQ(){
+		return q;
+	}
+	
+	public LingVar<?> getP(){
+		return p;
+	}
+	
+	public double gettruthVal(){
+		return truthVal;
+	}
+	
+	public abstract String getSentence();
+
+	public int getModP() {
+		return modP;
+	}
+
+	public void setModP(int modP) {
+		this.modP = modP;
+	}
+	
+}

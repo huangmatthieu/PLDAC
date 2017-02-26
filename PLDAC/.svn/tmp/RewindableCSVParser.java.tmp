@@ -1,0 +1,82 @@
+package lfi.tools;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.apache.commons.csv.*;
+
+/**
+ * CSV Parser qui peut être rembobiné
+ * @author Gilles
+ *
+ */
+public class RewindableCSVParser {
+	private String filename;
+	private FileReader in;
+	private CSVParser csvPars;
+	/**
+	 * Nécessite le nom du fichier à la construction
+	 * @param filename
+	 * @throws FileNotFoundException
+	 */
+	public RewindableCSVParser(String filename) throws FileNotFoundException{
+		this.filename = filename;
+		createFileReader();
+		// CREER LE CSV PARSER AVEC LE READER
+	}
+	
+<<<<<<< .mine
+	/**
+	 * @return the in
+	 */
+	public FileReader getIn() {
+		return in;
+	}
+
+	/**
+	 * @param in the in to set
+	 */
+	public void setIn(FileReader in) {
+		this.in = in;
+	}
+
+=======
+	public CSVParser getCSVParser() {
+		return csvPars;
+	}
+	
+>>>>>>> .r4311
+	public void rewind(){
+<<<<<<< .mine
+		try {
+			in.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+=======
+		try {
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		createFileReader();
+	}
+	
+	/**
+	 * Méthode privée pour créer le FileReader
+	 */
+	private void createFileReader() {
+		try {
+			in = new FileReader(this.filename);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+>>>>>>> .r4311
+	}
+	
+
+}

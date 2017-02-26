@@ -1,0 +1,34 @@
+package lfi.fuzzy.general;
+
+/**
+ * Représente un sef "en S", i.e. défini par les points (a,0)-(b,1)
+ * 
+ * @author LIP6 / LFI
+ *
+ */
+public class SFS extends TwoPointsFS {
+
+	
+	/** Constructeur a 2 param�tres
+	 * @param a
+	 * @param b
+	 */
+	public SFS(double a, double b) {
+		this.a = a;
+		this.b = b;
+	}
+
+	/** Retourne l'appartenance de x au sef
+	 * @see lfi.fuzzy.general.FuzzySet#mShip(double)
+	 */
+	@Override
+	public double mShip(double x) {
+		if (x <= a)
+			return 0.0;
+		if ((x > a) && (x < b))
+			return (x - b) / (b - a);
+		else
+			return 1.0;
+	}
+
+}

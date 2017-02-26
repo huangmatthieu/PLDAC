@@ -1,0 +1,58 @@
+package lfi.fuzzy.summaries;
+
+import lfi.fuzzy.ffs.FFS;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.linguistic.Quantifier;
+import lfi.tools.Tools;
+
+public class QPSummary {
+	
+	protected Quantifier q;
+	protected LingVar<?> p;
+	protected int modP;
+	protected double truthVal;
+	
+	public QPSummary(Quantifier q, LingVar<?> p, int modP, double truthVal){
+		this.q = q;
+		this.p = p;
+		this.modP = modP;
+		this.truthVal = truthVal;
+	}
+	
+	protected String getQBloc(){
+		return q.getLingForm();
+	}
+	
+	protected String getPBloc(){
+		return p.getPForm(modP);
+	}
+	
+	public Quantifier getQ(){
+		return q;
+	}
+	
+	public LingVar<?> getP(){
+		return p;
+	}
+	
+	public double gettruthVal(){
+		return truthVal;
+	}
+	
+	public String getSentence(){
+		String sentence = this.getPBloc();
+		String newSentence = Tools.replace(sentence,"%verbBe%",FFS.params.getVerbBe());
+		String newSentence2 = Tools.replace(newSentence,"%modality%",p.getModalities().get(modP).toLowerCase());
+		String newSentence3 = Tools.replace(newSentence2,"%verbHave%",FFS.params.getVerbHave());
+		return this.getQBloc()+" "+newSentence3+" ("+truthVal+")";
+	}
+
+	public int getModP() {
+		return modP;
+	}
+
+	public void setModP(int modP) {
+		this.modP = modP;
+	}
+	
+}

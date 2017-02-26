@@ -1,0 +1,36 @@
+package lfi.fuzzy.ffs.vocabulary;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+
+import org.apache.commons.csv.CSVParser;
+
+import lfi.fuzzy.ffs.factories.LingVarFact;
+import lfi.fuzzy.ffs.factories.QuantFact;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.linguistic.Quantifier;
+import lfi.tools.RewindableCSVParser;
+
+public class LingVarsParser {
+	
+	private BufferedReader parser;
+	
+	public ArrayList<LingVar<?>> readLingVar(String filename) throws Exception{
+		RewindableCSVParser rparser = new RewindableCSVParser(filename);
+		parser = rparser.getCSVParser();
+		final ArrayList<String> ligfic = new ArrayList<String>();
+		final ArrayList<LingVar<?>> result = new ArrayList<LingVar<?>>();
+		for (String line = parser.readLine(); line != null; line = parser.readLine()) {
+			ligfic.add(line);
+		}
+		for(int i = 0 ; i < ligfic.size() ; i++){
+			result.add(LingVarFact.build(ligfic.get(i)));
+		}	
+		rparser.getIn().close();
+		rparser.getCSVParser().close();
+		return result;
+	}
+
+}

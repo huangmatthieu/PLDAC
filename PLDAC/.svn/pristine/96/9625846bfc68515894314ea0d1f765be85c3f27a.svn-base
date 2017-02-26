@@ -1,0 +1,21 @@
+package lfi.fuzzy.ffs.factories;
+
+/**
+ * 
+ * Factorie de Quantificateur
+ * 
+ * @author David
+ *
+ */
+
+import lfi.fuzzy.lingvar.Quantifier;
+
+public class QuantFact {
+	
+	public static Quantifier build(String spec){
+		Quantifier q=new Quantifier();
+		q.setName(spec);
+		return q;
+	}
+
+}

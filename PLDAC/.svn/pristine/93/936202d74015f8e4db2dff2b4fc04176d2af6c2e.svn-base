@@ -1,0 +1,12 @@
+package lfi.tools;
+import java.io.FileReader;
+
+import org.apache.commons.csv.*;
+
+public class RewindableCSVParser {
+	private String filename;
+	private FileReader in;
+	
+	
+
+}

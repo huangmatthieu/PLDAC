@@ -1,0 +1,24 @@
+#Fichier de configuration test
+
+#Fichier de données
+dataFileName = test/AmzData/AnalyseClassements.csv
+
+#fichier quantifier
+quantifFileName = test/struc/quant.csv
+
+#Fichier de liens entre les colonnes du fichier de données et les variables linguistiques
+linksFileName = test/struc/links3.csv
+
+#Fichier LV
+lvFileName = test/struc/lvAmz.csv
+
+ts = 0.5
+supp =  0.1
+mdef = 5
+fuz = 0.6666666
+n = -1
+skip = 1
+tnorm = Z
+verbBe = sont
+verbHave = ont
+entities = livres

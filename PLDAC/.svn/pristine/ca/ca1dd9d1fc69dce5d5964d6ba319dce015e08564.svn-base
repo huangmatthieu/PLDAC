@@ -1,0 +1,231 @@
+/**
+ * 
+ */
+package lfi.fuzzy.ffs;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import lfi.fuzzy.ffs.vocabulary.Vocabulary;
+import lfi.fuzzy.linguistic.*;
+import lfi.fuzzy.partitions.MShips;
+import lfi.fuzzy.summaries.QPSummary;
+import lfi.fuzzy.summaries.QRPSummary;
+import lfi.fuzzy.summaries.Summariser;
+import lfi.fuzzy.summaries.Summary;
+import lfi.tools.RewindableCSVParser;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+/**
+ * RÃ©sumeur rapide.
+ * @author Gilles
+ *
+ */
+public class FastSummariser extends Summariser {
+
+	public FastSummariser(Vocabulary v, RewindableCSVParser data) {
+		super(v, data);
+	}
+
+	//Pour avoir le nombre de colonne dans le fichier de donnÃ©e
+	private int tailleVL = new Vocabulary(FFS.params.getLvFileName(),FFS.params.getQuantifFileName(),FFS.params.getLinksFileName()).getLinks().size();
+	private double[][] cardSimple = new double[tailleVL][5];
+	private double[][][][] cardDouble = new double[tailleVL][5][tailleVL][5];
+	private int nbLigData = 0;
+	Summary sum = new Summary();
+
+	/**
+	 * @return the cardSimple
+	 */
+	public double[][] getCardSimple() {
+		return cardSimple;
+	}
+
+
+	/**
+	 * @return the cardDouble
+	 */
+	public double[][][][] getCardDouble() {
+		return cardDouble;
+	}
+
+	/**
+	 * @see lfi.fuzzy.summaries.Summariser#summarise()
+	 */
+
+	@Override
+	public Summary summarise() {
+		try {
+			firstPass();  //Initilisation de cardSimple
+			data.rewind();  //rÃ©initialisation des donnÃ©es
+			secondPass();  //Initialisation de cardDouble
+			data.close();  //fermeture
+
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		genSentenceQP();  //gÃ©nÃ©ration de phrase "Qx sont P"
+		genSentenceQRP(); //gÃ©nÃ©ration de phrase "QRx sont P"
+		return sum;
+	}
+
+	/**
+	 * 1Ã¨re passe
+	 * @throws IOException 
+	 */
+	private void firstPass() throws IOException {
+		CSVParser list = data.getCsvParser();
+		nbLigData = 0;
+		for(CSVRecord lig : list){
+			//System.out.println();
+			//System.out.println("Ligne numÃ©ro "+(iter+1)+" du fichier de donnÃ©e :");
+			if(lig.get(0).startsWith("#"))
+				continue;
+			nbLigData++;
+			int taille = lig.size();
+			for(int i = 0 ; i < taille ; i++){
+				LingVar<?> lv = vocab.getLVInCol(i);
+				/*if(lv.getType().equals(LVType.CONTINUOUS))
+					System.out.println(((LVContinuous) lv).getPart().toString());*/
+				MShips ms;
+				if ( lig.get(i).trim().isEmpty())
+					ms = lv.mShip("0");
+				else
+					ms = lv.mShip(lig.get(i).trim());
+				//System.out.println(lv.getName()+" : modalitÃ© numÃ©ro : "+ms.getK1());
+				cardSimple[i][ms.getK1() - 1] += ms.getMu1();
+				//System.out.println("nombre de modalitÃ© :"+ms.getNmod());
+				//System.out.print(ms.getMu1()+" ,");
+				if (ms.getNmod() == 2)
+					cardSimple[i][ms.getK2() - 1] += ms.getMu2();
+				//System.out.println(ms.getMu2());
+			}
+		}
+	}
+
+	/**
+	 * 2Ã¨me passe
+	 * @throws IOException 
+	 */
+
+	private void secondPass() throws IOException{
+		tNorm = FFS.params.getTNorm();
+		CSVParser list =  data.getCsvParser();
+		for(CSVRecord lig : list){
+			if(lig.get(0).startsWith("#"))
+				continue;
+			int taille = lig.size();
+			for(int i = 0 ; i < taille ; i++){
+				LingVar<?> lv1 = vocab.getLVInCol(i);
+				MShips ms1;
+				if ( lig.get(i).trim().isEmpty())
+					ms1 = lv1.mShip("0");
+				else
+					ms1 = lv1.mShip(lig.get(i).trim());
+				for(int j = i+1 ; j < taille ; j++){	
+					LingVar<?> lv2 = vocab.getLVInCol(j);
+					MShips ms2;
+					if ( lig.get(i).trim().isEmpty())
+						ms2 = lv2.mShip("0");
+					else
+						ms2 = lv2.mShip(lig.get(j).trim());
+
+					if ((cardSimple[i][ms1.getK1() - 1] / nbLigData > FFS.params.getSupp()) && (cardSimple[j][ms2.getK1() - 1] / nbLigData > FFS.params.getSupp()))
+						cardDouble[i][ms1.getK1() - 1][j][ms2.getK1() - 1] += tNorm.calc(ms1.getMu1(), ms2.getMu1());
+
+					if ((ms1.getNmod() == 2) && (cardSimple[i][ms1.getK2() - 1] / nbLigData > FFS.params.getSupp()) && (cardSimple[j][ms2.getK1() - 1] / nbLigData > FFS.params.getSupp()))
+						cardDouble[i][ms1.getK2() - 1][j][ms2.getK1() - 1] += tNorm.calc(ms1.getMu2(), ms2.getMu1());
+
+					if ((ms2.getNmod() == 2) && (cardSimple[i][ms1.getK1() - 1] / nbLigData > FFS.params.getSupp()) && (cardSimple[j][ms2.getK2() - 1] / nbLigData > FFS.params.getSupp()))
+						cardDouble[i][ms1.getK1() - 1][j][ms2.getK2() - 1] += tNorm.calc(ms1.getMu1(), ms2.getMu2());
+
+					if ((ms2.getNmod() == 2) && (ms1.getNmod() == 2) && (cardSimple[i][ms1.getK2() - 1] / nbLigData > FFS.params.getSupp()) && (cardSimple[j][ms2.getK2() - 1] / nbLigData > FFS.params.getSupp()))
+						cardDouble[i][ms1.getK2() - 1][j][ms2.getK2() - 1] += tNorm.calc(ms1.getMu2(), ms2.getMu2());
+
+				}
+			}
+		}
+	}
+
+	/**
+	 * GÃ©nÃ©ration de phrase Qx sont P
+	 * 
+	 */
+
+	private void genSentenceQP(){
+		ArrayList<Quantifier> q = this.vocab.getQuantifiers();
+		double t;
+		int tailleQ = q.size();
+		int taille = this.vocab.getLinks().size();
+		for(int x = 0 ; x < tailleQ ; x++){  //Pour chaque quantifier q donnÃ© en entrÃ©e
+			for(int i = 0 ;i < taille ; i++){  //Pour chaque VL j du fichier de donnÃ©e
+				int nbMod = this.vocab.getLVInCol(i).getModalities().size();
+				for(int j = 0 ; j < nbMod ; j++){ //Pour chaque modalitÃ© k de j
+					if ( cardSimple[i][j] / nbLigData > FFS.params.getSupp()){ //si support suffisant
+						if(q.get(x).getType().equals(QType.ABSOLUTE))
+							t =  q.get(x).mShip(cardSimple[i][j]);
+						else
+							t = q.get(x).mShip(cardSimple[i][j] / (double)(nbLigData));
+						if( t > FFS.params.getTs()){
+							QPSummary qps = new QPSummary(q.get(x),vocab.getLVInCol(i),j,t);
+							sum.getQPSummaries().add(qps);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * GÃ©nÃ©ration de phrase QRx sont P
+	 * 
+	 */
+
+	private void genSentenceQRP(){
+		ArrayList<Quantifier> q = this.vocab.getQuantifiers();
+		double t;
+		int tailleQ = q.size();
+		int taille = this.vocab.getLinks().size();
+		for(int i = 0 ;i < taille ; i++){ //Pour chaque VL j
+			int nbMod1 = this.vocab.getLVInCol(i).getModalities().size();
+
+			for(int j = i + 1 ; j < taille ; j++){ //Pour chaque VL j'
+				int nbMod2 = this.vocab.getLVInCol(j).getModalities().size();
+
+				for(int k1 = 0 ; k1 < nbMod1 ; k1++){ //Pour chaque modalitÃ© k de j
+
+					for(int k2  = 0 ; k2 < nbMod2 ; k2++){ //Pour chaque modalitÃ© k'de j'
+
+						for(int q1 = 0 ; q1 < tailleQ ; q1++){ //Pour chaque quantifier q
+							if(q.get(q1).getType().equals(QType.ABSOLUTE)){  //si q est absolu
+								t = q.get(q1).mShip(cardDouble[i][k1][j][k2]);
+								if(t > FFS.params.getTs()){
+									QRPSummary qrp = new QRPSummary(q.get(q1),vocab.getLVInCol(j),vocab.getLVInCol(i),k2,k1,t);
+									sum.getQRPSummaries().add(qrp);
+								}
+
+							}else{  //si q est relatif
+								if(cardSimple[i][k1] / nbLigData > FFS.params.getSupp()){
+									t = q.get(q1).mShip(cardDouble[i][k1][j][k2] / cardSimple[i][k1]);
+									if(t > FFS.params.getTs()){
+										QRPSummary qrp = new QRPSummary(q.get(q1),vocab.getLVInCol(j),vocab.getLVInCol(i),k2,k1,t);
+										sum.getQRPSummaries().add(qrp);
+									}
+								}
+								if(cardSimple[j][k2] / nbLigData > FFS.params.getSupp()){
+									t = q.get(q1).mShip(cardDouble[i][k1][j][k2] / cardSimple[j][k2]);
+									if(t > FFS.params.getTs()){
+										QRPSummary qrp = new QRPSummary(q.get(q1),vocab.getLVInCol(i),vocab.getLVInCol(j),k1,k2,t);
+										sum.getQRPSummaries().add(qrp);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+}

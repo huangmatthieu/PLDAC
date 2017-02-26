@@ -1,0 +1,39 @@
+package lfi.fuzzy.ffs.vocabulary;
+
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+import lfi.fuzzy.ffs.factories.LingVarFact;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.tools.RewindableCSVParser;
+
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+public class LingVarsParser {
+
+	private CSVParser parser;
+
+	public ArrayList<LingVar<?>> readLingVar(String filename) throws Exception{
+		RewindableCSVParser rparser = new RewindableCSVParser(filename);
+		parser = rparser.getCsvParser();
+		ArrayList<CSVRecord> list = (ArrayList<CSVRecord>) parser.getRecords();
+		ListIterator<CSVRecord> it = list.listIterator();
+		final ArrayList<LingVar<?>> result = new ArrayList<LingVar<?>>();
+		while( it.hasNext()){
+			CSVRecord lig = it.next();
+			int taille = lig.size();
+			String str = "";
+			for(int i = 0 ; i < taille ; i++){
+				if(i == taille - 1)
+					str += lig.get(i);
+				else
+					str += lig.get(i)+",";
+			}
+			result.add(LingVarFact.build(str));
+		}
+		return result;
+	}
+}
+
+

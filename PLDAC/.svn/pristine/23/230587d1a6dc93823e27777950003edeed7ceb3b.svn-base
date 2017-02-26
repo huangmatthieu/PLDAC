@@ -1,0 +1,33 @@
+package lfi.fuzzy.summaries;
+
+import java.util.ArrayList;
+
+public class Summary {
+
+private ArrayList<QPSummary> qpSummaries;
+private ArrayList<QRPSummary> qrpSummaries;
+private Summariser summariser;
+
+
+public ArrayList<QPSummary> getQPSummaries(){
+	return qpSummaries;
+}
+
+public ArrayList<QRPSummary> getQRPSummaries(){
+	return qrpSummaries;
+}
+
+public Summariser getSummaries(){
+	return summariser;
+}
+
+public String getQPSentence(int i){
+	String s= ""+qpSummaries.get(i);
+	return s;
+}
+public String getQRPSentence(int i){
+	String s= ""+qrpSummaries.get(i);
+	return s;
+}
+
+}

@@ -1,0 +1,51 @@
+package lfi.fuzzy.ffs;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.apache.commons.csv.CSVParser;
+
+/**
+ * Classe mère des classes de lecture de fichiers CSV
+ * @author LIP6 / LFI
+ *
+ */
+public class CSVReader {
+
+	//		TODO : terminer la classe - voir notamment comment fonctionne org.apache.commons.csv.CSVParser
+
+	private CSVParser parser;
+	
+	public CSVReader() {
+	}
+	
+	/**
+	 * Méthode développée initialement par Matthieu et David (suite réunion du 04/02/2015) 
+	 * @param filename
+	 * @return
+	 * @throws IOException
+	 */
+	public static ArrayList<String> readFile(String filename) throws IOException{
+		FileReader fr;
+		final ArrayList<String> result = new ArrayList<String>();
+		try {
+			fr = new FileReader(filename);
+			 BufferedReader br = new BufferedReader(fr);
+			 for (String line = br.readLine(); line != null; line = br.readLine()) {
+		            result.add(line);
+		        }
+			 br.close();
+		     fr.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+
+	}
+
+
+}

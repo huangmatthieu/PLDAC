@@ -1,0 +1,2 @@
+vlPage,C,Faible|Moyen|Eleve,min/max 50|1000,%entities% ayant un nombre de pages %modality%, %verbHave% un nombre de page %modality%
+vlClassement,C, Mauvais|Moyen|Bon|Excellent,min/max 4000|24000, %entities% mauvais|%entities% moyen|%entities% bons|%entities% excellents, %verbBe% mauvais|%verbBe% moyen|%verbBe% bons|%verbBe% excellents

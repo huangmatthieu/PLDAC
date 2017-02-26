@@ -1,0 +1,10 @@
+package lfi.fuzzy.tnorms;
+
+public class tNormFact {
+
+	
+	public TNorm build(TType typ){
+		return null;
+		
+	}
+}

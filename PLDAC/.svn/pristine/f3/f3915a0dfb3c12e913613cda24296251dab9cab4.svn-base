@@ -1,0 +1,51 @@
+package lfi.fuzzy.ffs;
+
+import java.util.ArrayList;
+
+import lfi.fuzzy.ffs.vocabulary.QuantifParser;
+import lfi.fuzzy.ffs.vocabulary.Vocabulary;
+import lfi.fuzzy.linguistic.Quantifier;
+import lfi.fuzzy.summaries.Summary;
+import lfi.tools.RewindableCSVParser;
+
+
+/**
+ * Classe principale - contient le main
+ * @author LIP6 / LFI
+ *
+ */
+public class FFS {
+
+	/**
+	 * @param args
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 */
+	public static Params params = new Params("test/test.conf");
+	
+	public static void main(String[] args) throws Exception{
+		
+
+		QuantifParser lvp = new QuantifParser();
+		ArrayList<Quantifier> res = lvp.readQuantif(params.getQuantifFileName());
+		for(int i = 0 ; i < res.size() ; i++){
+			System.out.println(res.get(i).getName());
+		}
+		Vocabulary voc = new Vocabulary(params.getLvFileName(),params.getQuantifFileName(),params.getLinksFileName());
+		System.out.println(voc.getLV(1).getClass());
+		System.out.println();
+		System.out.println("------------------------------------------------");
+		
+		RewindableCSVParser data = new RewindableCSVParser(params.getDataFileName());
+		FastSummariser fs = new FastSummariser(voc, data);
+		Summary sum = fs.summarise();
+		System.out.println();
+		
+		for(int j = 0 ; j < sum.getQPSummaries().size() ; j++){
+			System.out.println(sum.getQPSentence(j));
+			
+		}
+		
+	}
+	
+}

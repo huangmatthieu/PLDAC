@@ -1,0 +1,49 @@
+Réalisé le 07/04/2015 à 14h
+
+TESTS OK
+
+Remarques : 
+- avec un support de 0, des phrases comme "La plupart des adultes sont grands (1) et Peu de grands sont des adultes (1) peuvent apparaître. Pas réellement une contradiction car il y a peu d'adultes -> nécessité d'un seuil de support
+- 5 personnes sont grands (0,37) est ininterprétable - systématiquement ajouter un adverbe qui quantifie l'approximation (exactement, grossièrement, environ...)   
+
+Résultat : 22 points de contrôle
+ ok -  ko
+
+Cahier de test 1
+
+Résultats attendus
+cardSimple
+ok - 1. vlTaille : Petit: 0, Moyen: 0.63, Grand: 4.37
+ok - 2. vlAge : Jeune: 2.7 ,Adulte: 0.4 ,Senior: 1.9
+
+cardDouble
+ok - Petit && Jeune : 0.00
+ok - Petit && Adulte : 0.00
+ok - Petit && Senior : 0.00
+ok - Moyen && Jeune : 0.07
+ok - Moyen && Adulte : 0.10
+ok - Moyen && Senior : 0.57
+ok - Grand && Jeune : 2.63
+ok - Grand && Adulte : 0.40
+ok - Grand && Senior : 1.43
+
+
+Cahier de test 2
+
+? - valeurs approximatives des keypoints de vlSalaire : 1500,2333,3166,4000 avec degré de flou initialisé à 2/3 avec noyau et distance inter-noyau =~833
+
+Résultats attendus
+cardSimple
+ok - 1. vlTaille : Petit: 0.85, Moyen: 3.15, Grand: 3.0
+ok - 2. vlSalaire : Faible: 2.76 ,Std: 2.24 ,Eleve: 2
+
+cardDouble
+ok - Petit && Faible : 0.0
+ok - Petit && Standard : 0.0
+ok - Petit && Eleve : 0.83
+ok - Moyen && Faible : 0.67
+ok - Moyen && Standard : 1.33
+ok - Moyen && Eleve : 1.17
+ok - Grand && Faible : 2.09
+ok - Grand && Standard : 0.91
+ok - Grand && Eleve : 0.00

@@ -1,0 +1,21 @@
+package lfi.tools;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+
+import org.apache.commons.csv.*;
+
+public class RewindableCSVParser {
+	private String filename;
+	private FileReader in;
+	public RewindableCSVParser(String filename) throws FileNotFoundException{
+		this.filename = filename;
+		in = new FileReader(filename);
+	}
+	
+	
+	public void rewind(){
+		
+	}
+	
+
+}

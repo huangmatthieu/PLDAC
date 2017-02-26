@@ -1,0 +1,30 @@
+package lfi.fuzzy.ffs.vocabulary;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.linguistic.Quantifier;
+
+public class Vocabulary {
+	private ArrayList<LingVar<?>> lingVars;
+	private HashMap<String,LingVar<?>> lingVarsByName;
+	private ArrayList<Quantifier> quantifiers;
+	private ArrayList<LingVar<?>> links;
+	
+	public Vocabulary(String aLVFile,String aQuantifFile,String aLinkFile){};
+
+
+
+	public LingVar getLV(int i){
+		return lingVars.get(i);
+	}
+	
+	public LingVar getLV(String name){
+		return lingVarsByName.get(name);
+	}
+	
+	public LingVar getLVinCol(int i){
+		return links.get(i);
+	}
+	}

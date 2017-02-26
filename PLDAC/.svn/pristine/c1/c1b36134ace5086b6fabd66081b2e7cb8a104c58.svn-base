@@ -1,0 +1,49 @@
+Cahier de test 1
+
+Données: test/data1.csv
+Quantificateurs: test/struc/quant.csv
+Liens: test/struc/link.csv
+LV: teset/struc/lv.csv
+
+Résultats attendus
+cardSimple
+1. vlTaille : Petit: 0, Moyen: 0.63, Grand: 4.36
+2. vlAge : Jeune: 2.7 ,Adulte: 0.4 ,Senior: 1.9
+
+cardDouble
+Petit && Jeune : 0.0
+Petit && Adulte : 0.0
+Petit && Senior : 0.0
+Moyen && Jeune : 0.07
+Moyen && Adulte : 0.1
+Moyen && Senior : 0.57
+Grand && Jeune : 2.63
+Grand && Adulte : 0.4
+Grand && Senior : 1.43
+
+
+Cahier de test 2
+
+
+Données: test/data2.csv
+Quantificateurs: test/struc/quant.csv
+Liens: test/struc/link2.csv
+LV: teset/struc/lv.csv
+
+valeurs approximatives des keypoints de vlSalaire : 1500,2333,3166,4000 avec degré de flou initialisé à 2/3 avec noyau et distance inter-noyau =~833
+
+Résultats attendus
+cardSimple
+1. vlTaille : Petit: 0.85, Moyen: 3.15, Grand: 3.0
+2. vlSalaire : Faible: 2.76 ,Std: 2.24 ,Eleve: 2
+
+cardDouble
+Petit && Faible : 0.0
+Petit && Standard : 0.0
+Petit && Eleve : 0.83
+Moyen && Faible : 0.67
+Moyen && Standard : 1.33
+Moyen && Eleve : 1.17
+Grand && Faible : 2.09
+Grand && Standard : 0.91
+Grand && Eleve : 0.0

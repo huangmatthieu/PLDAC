@@ -1,0 +1,1018 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="13.2">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>384</x>
+      <y>104</y>
+      <w>168</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>/TwoPointsFS/
+--
+-double a,b
+--
++get/set A,B
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>792</x>
+      <y>448</y>
+      <w>480</w>
+      <h>256</h>
+    </coordinates>
+    <panel_attributes>lfi.fuzzy.partitions
+--
+bg=orange
+layer=-10</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>392</x>
+      <y>40</y>
+      <w>168</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>/FuzzySet/
+--
+--
+/+double mShip(double x)/
+
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>600</x>
+      <y>88</y>
+      <w>168</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>Trapezoid
+--
+-double a,b,c,d
+--
++get/set A,B,C,D
++double mShip(double x)
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>576</x>
+      <y>184</y>
+      <w>168</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>ZFS
+--
+--
++double mShip(double x)
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>464</x>
+      <y>72</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>464</x>
+      <y>152</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>520</x>
+      <y>152</y>
+      <w>152</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;170.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>400</x>
+      <y>184</y>
+      <w>168</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>SFS
+--
+--
++double mShip(double x)
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>512</x>
+      <y>72</y>
+      <w>104</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;110.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>376</x>
+      <y>0</y>
+      <w>400</w>
+      <h>256</h>
+    </coordinates>
+    <panel_attributes>lfi.fuzzy.general
+--
+bg=orange
+layer=-10</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>808</x>
+      <y>160</y>
+      <w>216</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>template=T
+/LingVar&lt;T&gt;/
+--
+-String name
+-ArrayList&lt;String&gt; modalities
+--
++get/set Name/Modalities
+/+LVType getType/
+/+MShips mShip(T x)/
+
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1016</x>
+      <y>72</y>
+      <w>144</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enum&gt;&gt; QType
+--
+Absolute
+Relative</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1000</x>
+      <y>208</y>
+      <w>72</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>70.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>584</x>
+      <y>336</y>
+      <w>176</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>QuantFact
+--
+--
+__+Quantifier build(String spec)__
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1056</x>
+      <y>192</y>
+      <w>144</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enum&gt;&gt; LVType
+--
+Continuous
+Discrete</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>968</x>
+      <y>88</y>
+      <w>64</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;60.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>808</x>
+      <y>312</y>
+      <w>184</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>LVContinuous
+--
+-FuzzPart part
+--
++LVType getType
++MShips mShip(double x)
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>880</x>
+      <y>264</y>
+      <w>72</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+T: double</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1000</x>
+      <y>312</y>
+      <w>280</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>LVDiscrete
+--
+-HashMap&lt;String, HashMap&lt;int, double&gt; &gt;
+--
++LVType getType
++MShips mShip(String x)
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>992</x>
+      <y>264</y>
+      <w>72</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-
+T: String</panel_attributes>
+    <additional_attributes>10.0;10.0;20.0;60.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>792</x>
+      <y>24</y>
+      <w>504</w>
+      <h>408</h>
+    </coordinates>
+    <panel_attributes>lfi.fuzzy.linguistic
+--
+bg=orange
+layer=-10</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>808</x>
+      <y>480</y>
+      <w>216</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>/FuzzyPart/
+--
+-int m
+-double min, max
+-MShips result
+--
++get/set M/Min/Max
+/+MShips mShip(double x)/
+
+layer=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>896</x>
+      <y>368</y>
+      <w>72</w>
+      <h>128</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;70.0;140.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>824</x>
+      <y>608</y>
+      <w>184</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Ruspini
+--
+- ArrayList&lt;double&gt; keyPoints
+--
++ get/set KeyPoints
++ MShips mShip(double x)
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>904</x>
+      <y>576</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1056</x>
+      <y>608</y>
+      <w>184</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>UniformRuspini
+--
+- double fuz, nu, delta
+--
++ get/set fuz
++ MShips mShip(double x)
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1016</x>
+      <y>576</y>
+      <w>144</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;160.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1056</x>
+      <y>480</y>
+      <w>184</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>MShips
+--
+-int nMod, k1, k2
+-double mu1, mu2
+--
++get/set NMod/K1/K2
++get/set Mu1/Mu2
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1016</x>
+      <y>512</y>
+      <w>56</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>576</x>
+      <y>304</y>
+      <w>192</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>lfi.fuzzy.ffs.factories
+--
+bg=orange
+layer=-5</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>536</x>
+      <y>744</y>
+      <w>232</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Summary
+--
+-ArrayList&lt;QPSummary&gt; qpSummaries
+-ArrayList&lt;QRPSummary&gt; qrpSummaries
+--
++get QPSummaries/QRPSummaries
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>208</x>
+      <y>272</y>
+      <w>568</w>
+      <h>432</h>
+    </coordinates>
+    <panel_attributes>lfi.fuzzy.ffs
+--
+bg=orange
+layer=-10</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>808</x>
+      <y>56</y>
+      <w>168</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>Quantifier
+--
+-String name
+-QType type
+-FuzzySet fs
+--
++get/set Name/Type/FS
++double mShip(double x)
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>552</x>
+      <y>64</y>
+      <w>272</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>320.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>584</x>
+      <y>408</y>
+      <w>176</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>LingVarFact
+--
+--
+__+LingVar build(String spec)__
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>752</x>
+      <y>96</y>
+      <w>72</w>
+      <h>288</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;340.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>752</x>
+      <y>216</y>
+      <w>72</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;280.0;70.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>224</x>
+      <y>304</y>
+      <w>328</w>
+      <h>384</h>
+    </coordinates>
+    <panel_attributes>lfi.fuzzy.ffs.vocabulary
+--
+bg=orange
+layer=-5</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>232</x>
+      <y>328</y>
+      <w>264</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>QuantifParser
+--
+- CSVParser parser
+--
+__+ArrayList&lt;LingVar&gt; readQuantif(String filename)__
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>232</x>
+      <y>400</y>
+      <w>264</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>LingVarsParser
+--
+- CSVParser parser
+--
+__+ArrayList&lt;LingVar&gt; readLingVars(String aLVFile)__
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>232</x>
+      <y>544</y>
+      <w>280</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>Vocabulary
+--
+-ArrayList&lt;LingVar&gt; lingVars
+-HashMap&lt;String, LingVar&gt; lingVarsByName
+-ArrayList&lt;Quantifier&gt; quantifiers
+-ArrayList&lt;LingVar&gt; links
+--
++Vocabulary(String aLVFile, aQuantifFile, aLinkFile)
++LingVar getLV(int i) // lingVars
++LingVar getLV(String name) // lingVarsByName
++LingVar getLVInCol(int i) // lingVars(links)
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>232</x>
+      <y>464</y>
+      <w>264</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>LinksParser
+--
+- CSVParser parser
+--
+__+ArrayList&lt;LingVar&gt; readQuantif(String filename)__
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>216</x>
+      <y>8</y>
+      <w>144</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>org.apache.commons.csv
+--
+bg=orange
+layer=-10</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>232</x>
+      <y>32</y>
+      <w>80</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>CSVParser</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>192</x>
+      <y>208</y>
+      <w>56</w>
+      <h>232</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>50.0;270.0;10.0;70.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>288</x>
+      <y>208</y>
+      <w>104</w>
+      <h>136</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>110.0;150.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>176</x>
+      <y>208</y>
+      <w>72</w>
+      <h>296</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>70.0;350.0;10.0;70.0;30.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>488</x>
+      <y>344</y>
+      <w>112</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>488</x>
+      <y>416</y>
+      <w>112</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;120.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>432</x>
+      <y>512</y>
+      <w>24</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;40.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>488</x>
+      <y>440</y>
+      <w>40</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;130.0;30.0;50.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>488</x>
+      <y>360</y>
+      <w>56</w>
+      <h>216</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>30.0;250.0;50.0;110.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>136</x>
+      <y>104</y>
+      <w>224</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lfi.tools
+--
+bg=orange
+layer=-10</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>144</x>
+      <y>128</y>
+      <w>208</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>RewindableCSVParser
+--
+- String fileName
+- FileReader in
+--
++RewindableCSVParser(String filename)
++rewind // close / open</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>272</x>
+      <y>48</y>
+      <w>24</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;100.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates>
+      <x>208</x>
+      <y>712</y>
+      <w>568</w>
+      <h>224</h>
+    </coordinates>
+    <panel_attributes>lfi.fuzzy.summaries
+--
+bg=orange
+layer=-10</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>576</x>
+      <y>608</y>
+      <w>192</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>FastSummariser
+--
+--
++Summary summarise()
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>216</x>
+      <y>744</y>
+      <w>296</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Summariser
+--
+-RewindableCSVParser data
+-Vocabulary v
+--
++Summariser(Vocabulary v, RewindableCSVParser data)
+/+Summary summarise/
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>504</x>
+      <y>768</y>
+      <w>48</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;40.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>464</x>
+      <y>848</y>
+      <w>136</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>QRPSummary
+--
+-LingVar r
+--
++get R
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>632</x>
+      <y>848</y>
+      <w>136</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>QPSummary
+--
+-Quantifier q
+-Attribute p
+-double truthVal
+--
++get Q/P/TruthVal
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>592</x>
+      <y>880</y>
+      <w>56</w>
+      <h>24</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>552</x>
+      <y>816</y>
+      <w>48</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>40.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>672</x>
+      <y>816</y>
+      <w>40</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>448</x>
+      <y>672</y>
+      <w>24</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>168</x>
+      <y>208</y>
+      <w>64</w>
+      <h>576</h>
+    </coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>60.0;700.0;30.0;660.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>576</x>
+      <y>504</y>
+      <w>192</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>FFS
+--
+--
+_+main(args)_
+
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>488</x>
+      <y>680</y>
+      <w>144</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;80.0;160.0;10.0</additional_attributes>
+  </element>
+</diagram>

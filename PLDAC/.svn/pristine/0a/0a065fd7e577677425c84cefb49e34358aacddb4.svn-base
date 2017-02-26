@@ -1,0 +1,32 @@
+package lfi.fuzzy.ffs.vocabulary;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.tools.RewindableCSVParser;
+
+public class LinksParser {
+	private BufferedReader parser;
+	
+	public ArrayList<LingVar<?>> readLinks(String filename, HashMap<String,LingVar<?>>lin) throws IOException{
+		RewindableCSVParser rparser = new RewindableCSVParser(filename);
+		parser = rparser.getCSVParser();
+		
+		final ArrayList<String> ligfic = new ArrayList<String>();
+		final ArrayList<LingVar<?>> result = new ArrayList<LingVar<?>>();
+
+		for (String line = parser.readLine(); line != null; line = parser.readLine()) {
+			ligfic.add(line);
+		}
+		for(int i = 0 ; i < ligfic.size() ; i++){
+			String str = ligfic.get(i).split("[,]")[1];
+			result.add(lin.get(str));
+		}
+		return result; 
+		
+	}
+
+}

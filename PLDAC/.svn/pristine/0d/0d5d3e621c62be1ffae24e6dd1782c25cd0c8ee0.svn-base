@@ -1,0 +1,17 @@
+package lfi.fuzzy.ffs.vocabulary;
+
+import java.util.ArrayList;
+
+import lfi.fuzzy.linguistic.LingVar;
+
+import org.apache.commons.csv.CSVParser;
+
+public class QuantifParser {
+	private CSVParser parser;
+	
+	public ArrayList<LingVar<?>> readQuantif(String filname){
+		//TODO
+		return null;
+	}
+
+}

@@ -1,0 +1,102 @@
+package lfi.fuzzy.ffs;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+
+import lfi.fuzzy.ffs.vocabulary.Vocabulary;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.summaries.Summary;
+import lfi.tools.RewindableCSVParser;
+
+
+/**
+ * Classe principale - contient le main
+ * @author LIP6 / LFI
+ *
+ */
+public class FFS {
+
+	/**
+	 * @param args
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 */
+	public static Params params = new Params("test/test.conf");
+
+	public static void main(String[] args) throws Exception{
+
+		long startTime = System.currentTimeMillis();
+
+		
+		Vocabulary voc = new Vocabulary(params.getLvFileName(),params.getQuantifFileName(),params.getLinksFileName());	
+		RewindableCSVParser data = new RewindableCSVParser(params.getDataFileName());
+		FastSummariser fs = new FastSummariser(voc, data);
+		fs.setVerbBe(params.getVerbBe());
+		fs.setVerbHave(params.getVerbHave());
+		fs.setEntities(params.getEntities());
+		Summary sum = fs.summarise();
+		double [][] cardSimple = fs.getCardSimple();
+		double [][][][] cardDouble = fs.getCardDouble();
+
+
+		//Affichage du tableau de cardSimple
+
+		LingVar<?> lv;
+		System.out.println("tableau de cardSimple (VL en ligne et modalité en colonne) : \n");
+		for(int i = 0 ; i < cardSimple.length ; i++){
+			lv = voc.getLVInCol(i);
+			System.out.print(lv.getName() + " | ");
+			for(int j = 0 ; j < lv.getModalities().size(); j++){
+				System.out.print(lv.getModalities().get(j) + ": " +Params.getAsDecimal(cardSimple[i][j]) + " ,");
+			}
+			System.out.println();
+		}
+
+		//Affichage du tableau cardDouble
+
+		System.out.println("\ntableau de cardDouble : \n");
+		for(int i = 0 ; i < cardDouble.length ; i++){  //pour chaque vl j
+			for(int j = i + 1 ; j < cardDouble[0][0].length ; j ++){  //pour chaque vl j'
+				for(int k1 = 0 ; k1 < voc.getLVInCol(i).getModalities().size() ; k1++){ //pour chaque modalité k de j
+					for(int k2 = 0 ; k2 < voc.getLVInCol(j).getModalities().size() ; k2++){ //pour chaque modalité k' de j'
+						System.out.print(voc.getLVInCol(i).getModalities().get(k1)+" && "+voc.getLVInCol(j).getModalities().get(k2)+" : ");
+						System.out.println(Params.getAsDecimal(cardDouble[i][k1][j][k2]));
+					}
+				}
+			}
+		}
+		System.out.println("_____________________________________\n");	
+		
+		FileWriter fw = new FileWriter("test/Result/resultat.txt", false);
+		BufferedWriter output = new BufferedWriter(fw);
+		
+		//Affichage des résumés Qx sont P
+		System.out.println("\nAffichage des résumés Qx sont P : \n");
+		output.write("Affichage des résumés Qx sont P : \n\n");
+		for(int j = 0 ; j < sum.getQPSummaries().size() ; j++){
+			System.out.println(sum.getQPSentence(j));
+			output.write(sum.getQRPSentence(j)+"\n");
+
+		}
+
+		//Affichage des résumés QRx sont P
+		
+		System.out.println("\nAffichage des résumés QRx sont P : \n");
+		output.write("\nAffichage des résumés QRx sont P : \n\n");
+		for(int j = 0 ; j < sum.getQRPSummaries().size() ; j++){
+			System.out.println(sum.getQRPSentence(j));	
+			output.write(sum.getQRPSentence(j)+"\n");
+		}
+
+		output.flush();
+		output.close();
+		
+		System.out.println("\nfichier résultat créé");
+		
+		long stopTime = System.currentTimeMillis();
+		long elapsedTime = stopTime - startTime;
+		System.out.println("\n\nTemps d'execution :"+elapsedTime+" ms");
+
+	}
+
+}

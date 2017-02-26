@@ -1,0 +1,47 @@
+package lfi.fuzzy.summaries;
+
+import lfi.fuzzy.ffs.vocabulary.Vocabulary;
+import lfi.tools.RewindableCSVParser;
+
+public abstract class Summariser {
+private RewindableCSVParser data;
+private Vocabulary vocab;
+private String verBe,verbHave, entities;
+
+public Vocabulary getVocab(){
+	return vocab;
+}
+
+public String getVerBe(){
+	return verBe;
+}
+public String getVerbHave(){
+	return verbHave;
+}
+public String getEntities(){
+	return entities;
+}
+
+public void setVerBe(String verBe){
+	this.verBe=verBe;
+}
+public void setVerbHave(String verbHave){
+	this.verbHave=verbHave;
+}
+public void setEntities(String e){
+	entities=e;;
+}
+
+
+
+
+
+public Summariser(Vocabulary v,RewindableCSVParser data){
+	vocab=v;
+	this.data=data;
+	
+	
+}
+public  abstract Summary summarise();
+
+}

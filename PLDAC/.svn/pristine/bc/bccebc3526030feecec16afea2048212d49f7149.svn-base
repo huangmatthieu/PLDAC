@@ -1,0 +1,190 @@
+package lfi.fuzzy.ffs.factories;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+import lfi.fuzzy.ffs.FFS;
+import lfi.fuzzy.linguistic.LVContinuous;
+import lfi.fuzzy.linguistic.LVDiscrete;
+import lfi.fuzzy.linguistic.LVType;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.partitions.FuzzyPart;
+import lfi.fuzzy.partitions.Ruspini;
+import lfi.fuzzy.partitions.UniformRuspini;
+
+
+ /**
+ ** @author David
+ **/
+
+public class LingVarFact {
+	public static LingVar<?> build(String spec) throws Exception{
+		String separateur;
+		if(FFS.dataFormat.equals("EN"))
+			separateur =",";
+		else
+			separateur = ";";
+		String[] res = spec.split(separateur);
+		String nameLV = res[0];
+		String typeLV = res[1];
+		if(!(typeLV.equalsIgnoreCase("c") || typeLV.equalsIgnoreCase("d")))throw new Exception("type inconnu : " + spec);
+		if(typeLV.equalsIgnoreCase("c")){ // Partition Continue
+			LVContinuous lv = new LVContinuous();
+			FuzzyPart fp;
+			if(res[3].toLowerCase().startsWith("min/max")){ // Commence par min/max
+				fp = new UniformRuspini();
+				String[] cut = res[3].split("[ ]");
+				String[] n = cut[1].split("[|]"); // récupère les valeurs min max
+				double min = Double.parseDouble(n[0]), max = Double.parseDouble(n[1]);
+				if( max < min)throw new Exception("Erreur ! le max est plus petit que le min : " + spec);
+				ArrayList<String> modalites = getModName(res[2], nameLV, FFS.mdef);
+				
+				((UniformRuspini) fp).setFuz(FFS.fuz); // Créé la partition floue Ruspinin Uniforme 
+				fp.setMin(min);
+				fp.setMax(max);
+				fp.setM(modalites.size());
+				lv.setPart(fp); // Mets la partition dans la VL
+				lv.setName(nameLV);
+				((LingVar<Double>) lv).setModalities(modalites);
+				lv.setType(LVType.CONTINUOUS);
+				return lv;
+
+			}else{ // Ne commence pas par min/max : valeurs clés spécifiées
+				boolean isRU = true; // Permet de verifier si la partition KeyPoints est Ruspini ou bien Ruspini Uniforme
+				ArrayList<Double> keyPoints = new ArrayList<Double>();
+				for(String retval : res[3].split("[|]")){
+					double val = Double.parseDouble(retval);
+					keyPoints.add(val);
+				}
+				if (keyPoints.size() < 4)
+					throw new Exception("Nombre de points clés insuffisant (4 minimum) : " + spec);
+				else if (keyPoints.size() % 2 == 1)
+					throw new Exception("Le nombre de points clés doit être paris > à 4 : " + spec);
+				
+				Double maxval =  keyPoints.get(keyPoints.size() - 1), minval = keyPoints.get(0);
+				//Comparaison des tailles de noyaux
+				for(int t = 4 ; t < keyPoints.size() ; t = t + 2){
+					if((keyPoints.get(t) - keyPoints.get(t - 1)) == (keyPoints.get(t - 2) - keyPoints.get(t - 3)))
+						continue;
+					else{
+						isRU = false;
+						break;
+					}
+				}
+				//Comparaison des tailles inter noyaux
+				for(int t = 2 ; t < keyPoints.size() ; t = t + 2){
+					if((keyPoints.get(t + 1) - keyPoints.get(t)) == (keyPoints.get(t - 1) - keyPoints.get(t - 2)))
+						continue;
+					else{
+						isRU = false;
+						break;
+					}
+				}
+				
+				int m = (keyPoints.size() + 2) / 2; // nombre de points-clés = 2(nb modalités - 1)
+				ArrayList<String> modalites = getModName(res[2], nameLV, m);		
+				if(isRU){ // Si tailles noyaux égales et tailles inter noayux égales -> conversion en Ruspini Uniforme
+					fp = new UniformRuspini();	
+					fp.setM(m);
+					fp.setMin(minval);
+					fp.setMax(maxval);
+					double fuziness;
+					if(keyPoints.get(1) == keyPoints.get(2))
+						fuziness = 1;
+					if(keyPoints.get(0) == keyPoints.get(1))
+						fuziness = 0;
+					else
+						//System.out.println(keyPoints.get(1)+" "+ keyPoints.get(0)+" "+modalites.size()+" "+maxval+" "+minval);
+						fuziness = (keyPoints.get(1) - keyPoints.get(0)) * (modalites.size() - 1) / (maxval - minval);
+					((UniformRuspini)fp).setFuz(fuziness);
+					lv.setPart(fp);
+					lv.setName(nameLV);
+					lv.setModalities(modalites);
+					lv.setType(LVType.CONTINUOUS);
+					return lv;
+
+				}else{ // Ruspinin normale
+					fp = new Ruspini();
+
+					if(keyPoints.size() != 2 * (modalites.size() - 1))throw new Exception("nombre de valeur different de 2(m-1)");
+					fp.setM(m);
+					fp.setMin(minval);
+					fp.setMax(maxval);
+					((Ruspini) fp).setKeyPoints(keyPoints);
+					lv.setPart(fp);
+					lv.setName(nameLV);
+					lv.setModalities(modalites);
+					lv.setType(LVType.CONTINUOUS);
+					return lv;
+				}	
+			}
+			//type vaut D
+		}else{
+			LVDiscrete ld= new LVDiscrete();
+			ld.setName(res[0]);
+			ld.setType(LVType.DISCRETE);
+			Pattern pp = Pattern.compile("\\W+\\W+");
+			String[] items = pp.split(res[3],10000 );
+			ArrayList<String> modalites = new ArrayList<String>();
+			for(String retval : res[2].split("[|]"))
+				modalites.add(retval);
+			ld.setModalities(modalites);
+			HashMap<String,HashMap<Integer,Double>> nmod_appart=new HashMap<String, HashMap<Integer,Double>>();
+			for(int i = 0 ; i < items.length;i++){
+				HashMap<Integer, Double> d =new HashMap<Integer,Double>();
+				if(!items[i].contains("|")){
+					//System.out.println(items[i]);  // DEBUG
+
+					int j = i + 1;
+					if(j < items.length) {
+						while((items[j].contains("|"))&& (items.length>j)){
+							String [] p = items[j].split("[|]");
+							d.put(Integer.parseInt(p[0]), Double.parseDouble(p[1]));
+							j++;
+						}
+						nmod_appart.put(items[i], d);
+						System.out.println(nmod_appart.get(items[i]));  // Double
+						HashMap<Integer,Double> list = nmod_appart.get(items[i]);
+						Set<Integer> cle = list.keySet();
+						double somme = 0;
+						for(int z = 0 ; z < cle.size() ; z++){
+							if((list.get(cle.toArray()[z]) < 0) || (list.get(cle.toArray()[z]) > 1)) throw new Exception("Appartenance doit etre compris entre 0 et 1");
+							if(((int)cle.toArray()[z] < 1) || ((int)cle.toArray()[z] > modalites.size()))throw new Exception("Numéro de modalité doit etre compris entre 1 et m !");
+							somme += list.get(cle.toArray()[z]);
+						}
+						if(somme != 1.0)throw new Exception("Erreur !La somme des appartenances est différente de 1 pour une valeur de l'univers");
+					}
+
+				}else{
+					continue;
+				}
+			}
+			ld.setLvd(nmod_appart);
+			return ld;
+		}
+	}
+	
+	/**
+	 * Conversion d'une chaîne de noms de modalités en ArrayList
+	 * @param names
+	 * @param nbMod
+	 * @return
+	 */
+	private static ArrayList<String> getModName(String names, String nameLV, int nbMod) {
+		ArrayList<String> modalites = new ArrayList<String>();
+		if(names.isEmpty()){ // Récupération des noms de modalités
+			for(int j = 0 ; j < nbMod ; j++){ // Si non défnins, génère
+				String str = nameLV + "_" + (j+1);
+				modalites.add(str);
+			}
+		}else{ // Si définis, récupère
+			for(String retval : names.split("[|]"))
+				modalites.add(retval);
+		}
+		return modalites;
+
+	}
+
+}

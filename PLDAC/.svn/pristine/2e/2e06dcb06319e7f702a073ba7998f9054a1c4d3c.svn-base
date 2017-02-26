@@ -1,0 +1,50 @@
+package lfi.fuzzy.lingvar;
+
+import java.util.HashMap;
+
+import lfi.fuzzy.partitions.MShips;
+
+/**
+ * 
+ * Variables linguistiques discrètes
+ * @author Matthieu
+ *
+ */
+
+public class LVDiscrete extends LingVar<String>{
+	
+	HashMap<String,HashMap<Integer,Double>> lvd;
+
+	/**
+	 * Renvoie l'appartenance de x à la partition
+	 * 
+	 * @see lfi.fuzzy.lingvar.LingVar#mShip(T)
+	 * 
+	 */
+	
+	@Override
+	public MShips mShip(String x) {
+		int modalite=modalities.size(),k1 = 0, k2 = 0;
+		double mu1 = 0, mu2 = 0;
+		HashMap<Integer, Double> hm = lvd.get(x);
+		int nMod = hm.size();
+		for(int i=1 ; i <= modalite ; i++){
+			if(hm.containsKey(i)){
+				k1 = i;
+				mu1 = hm.get(k1);
+				k2=k1+1;
+				mu2 = hm.get(k2);
+				break;
+			}
+		}
+		MShips ms = new MShips();
+		ms.setK1(k1);
+		ms.setK2(k2);
+		ms.setNmod(nMod);
+		ms.setMu1(mu1);
+		ms.setMu2(mu2);
+		return ms;
+	}
+	
+	
+}

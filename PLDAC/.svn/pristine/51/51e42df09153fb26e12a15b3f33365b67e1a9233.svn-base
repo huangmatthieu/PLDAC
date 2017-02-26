@@ -1,0 +1,116 @@
+package lfi.fuzzy.ffs;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import lfi.fuzzy.ffs.factories.LingVarFact;
+import lfi.fuzzy.ffs.factories.QuantFact;
+import lfi.fuzzy.ffs.vocabulary.LingVarsParser;
+import lfi.fuzzy.ffs.vocabulary.LinksParser;
+import lfi.fuzzy.ffs.vocabulary.QuantifParser;
+import lfi.fuzzy.ffs.vocabulary.Vocabulary;
+import lfi.fuzzy.linguistic.LVContinuous;
+import lfi.fuzzy.linguistic.LVDiscrete;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.linguistic.Quantifier;
+import lfi.fuzzy.partitions.FuzzyPart;
+import lfi.fuzzy.partitions.UniformRuspini;
+
+/**
+ * Classe principale - contient le main
+ * @author LIP6 / LFI
+ *
+ */
+public class FFS {
+
+	/**
+	 * @param args
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 */
+	
+	/** On initialise avec les valeurs par défaut des parametres **/
+	
+	public static double ts = 0.0;
+	public static int mdef = 5;
+	public static double fuz = 0.5;
+	public static int n = -1;
+	public static int skip = 0;
+	public static String dataFormat ="EN";
+	
+	public static void main(String[] args) throws Exception{
+		int taille=args.length;
+		if (taille % 2 != 0) throw new NumberFormatException();
+		//String filename="Lignes_IDF.csv";
+		//ArrayList<String> res = CSVReader.readFile(filename);
+		
+		/** 
+		 il est nécessaire de spécifier l'option qui correspond au paramètre. Par exemple pour le seuil, -t suivi du seuil.
+		 **/
+
+		for(int i=0 ; i < taille ; i = i+2){
+			switch (args[i])
+			{
+			case "-t":
+				ts = Double.parseDouble(args[i+1]);
+				break;
+			case "-m":
+				mdef = Integer.parseInt(args[i+1]);
+				break;
+			case "-f":
+				fuz = Double.parseDouble(args[i+1]);
+				break;
+			case "-n":
+				n = Integer.parseInt(args[i+1]);
+				break;
+			case "-s":
+				skip = Integer.parseInt(args[i+1]);
+				break;
+			case "-d":
+				dataFormat = args[i+1];
+				break;
+
+			default:
+			}
+		}
+		String strucFormat=dataFormat;
+		String vocabFormat=dataFormat;
+		System.out.println("seuil : "+ts+"\nmodalité : "+mdef+"\ndegré de flou :"+fuz+"\nnombre lignes : "+n+"\nligne à ignorer : "+skip+"\nformat : "+dataFormat);
+
+		String g="Souvent,R,S,0.4|0.2, ";
+		Quantifier q=QuantFact.build(g);
+		System.out.println(q.getName());
+		System.out.println(q.getType());
+		System.out.println(q.getFs());
+		
+		String spec = "vlSaison,D,Hiver|Printemps|Ete|Automne,Jan((1|1))Fev((1|1))Mar((1|0.6)(2|0.4))Avr((2|1))";
+		//String spec = "vlTaille,C,Petit|Moyen|Grand,90|120|150|180";
+		LingVar<?> lv = LingVarFact.build(spec);
+		System.out.println(lv.getModalities());
+		
+		System.out.println(lv.getName()+" \n"+lv.getType());
+		 //FuzzyPart fp = ((LVContinuous) lv).getPart();
+		System.out.println(((LVDiscrete) lv).getLvd());
+		//System.out.println(fp.getClass());
+		//System.out.println("la valeur du fuz est : "+((UniformRuspini)fp).getFuz());
+		
+		/*QuantifParser qp = new QuantifParser();
+		ArrayList<Quantifier> arq = qp.readQuantif("data.csv");
+		System.out.println(arq.get(2).getFs().getClass());
+		LingVarsParser lvp = new LingVarsParser();
+		ArrayList<LingVar<?>> arlv = lvp.readLingVar("data_lv.csv");
+		HashMap<String,LingVar<?>> lin = new HashMap<String,LingVar<?>>();
+		for(int i = 0 ; i < arlv.size() ; i++){
+			lin.put(arlv.get(i).getName(), arlv.get(i));
+		}
+		LinksParser lp = new LinksParser();
+		ArrayList<LingVar<?>> alp = lp.readLinks("data_link.csv",lin);
+		System.out.println(alp.size());
+		for(int i = 0 ; i < alp.size() ; i++){
+			System.out.println(alp.get(i).getName());
+		}*/
+		Vocabulary voc = new Vocabulary("data_lv.csv","data_quant.csv","data_link.csv");
+		System.out.println(voc.getLV("vlTaille").getClass());
+	}
+}

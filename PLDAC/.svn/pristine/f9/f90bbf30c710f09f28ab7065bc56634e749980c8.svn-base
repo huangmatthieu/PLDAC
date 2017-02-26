@@ -1,0 +1,8 @@
+package lfi.fuzzy.tnorms;
+
+public interface TZadeh {
+	TType type=TType.Zadeh;
+
+	public double calc( double a, double b);
+
+}

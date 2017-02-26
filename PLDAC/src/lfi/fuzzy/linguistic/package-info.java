@@ -1,0 +1,6 @@
+/**
+ * Package dédié à la gestion de variables linguistiques
+ * @author LIP6 / LFI
+ *
+ */
+package lfi.fuzzy.linguistic;

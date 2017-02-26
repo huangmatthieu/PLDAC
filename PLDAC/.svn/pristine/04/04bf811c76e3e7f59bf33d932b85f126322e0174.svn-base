@@ -1,0 +1,42 @@
+package lfi.fuzzy.lingvar;
+
+import java.util.ArrayList;
+
+import lfi.fuzzy.lingvar.LVType;
+ 
+import lfi.fuzzy.partitions.MShips;
+import lfi.fuzzy.partitions.FuzzyPart;
+
+/**
+ * 
+ * Variables linguistiques continues
+ * @author Matthieu
+ *
+ */
+
+
+public class LVContinuous extends LingVar<Double> {
+	
+	private FuzzyPart part;
+	
+	public LVType getType() {
+		return LVType.CONTINUOUS;
+	}
+
+	public FuzzyPart getPart() {
+		return part;
+	}
+	
+	public void setPart(FuzzyPart part) {
+		this.part = part;
+	}
+
+	@Override
+	public MShips mShip(Double x) {
+		return part.mShip(x);
+	}
+
+
+	
+
+}

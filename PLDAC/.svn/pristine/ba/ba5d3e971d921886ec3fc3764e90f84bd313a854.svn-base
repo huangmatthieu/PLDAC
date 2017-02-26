@@ -1,0 +1,18 @@
+package lfi.fuzzy.ffs.factories;
+
+import lfi.fuzzy.lingvar.LingVar;
+
+/**
+ * 
+ *
+ * 
+ * @author David
+ *
+ */
+public class LingVarFact {
+	public static LingVar build(String spec){
+		LingVar lv = null;
+		lv.setName(spec);
+		return lv;
+	}
+}

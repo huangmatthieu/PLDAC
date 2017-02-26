@@ -1,0 +1,68 @@
+package lfi.fuzzy.ffs;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+/**
+ * Classe principale - contient le main
+ * @author LIP6 / LFI
+ *
+ */
+public class FFS {
+
+	/**
+	 * @param args
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 */
+	public static void main(String[] args) throws IOException, NumberFormatException{
+		int taille=args.length;
+		if (taille % 2 != 0) throw new NumberFormatException();
+		String filename="Lignes_IDF.csv";
+		ArrayList<String> res = CSVReader.readFile(filename);
+		
+		/** On initialise avec les valeurs par défaut des parametres **/
+		
+		double ts = 0.0;
+		int mdef = 5;
+		double fuz = 0.5;
+		int n = -1;
+		int skip = 0;
+		String dataFormat="EN";
+		
+		/** 
+		 il est nécessaire de spécifier l'option qui correspond au paramètre. Par exemple pour le seuil, -t suivi du seuil.
+		 **/
+
+		for(int i=0 ; i < taille ; i = i+2){
+			switch (args[i])
+			{
+			case "-t":
+				ts = Double.parseDouble(args[i+1]);
+				break;
+			case "-m":
+				mdef = Integer.parseInt(args[i+1]);
+				break;
+			case "-f":
+				fuz = Double.parseDouble(args[i+1]);
+				break;
+			case "-n":
+				n = Integer.parseInt(args[i+1]);
+				break;
+			case "-s":
+				skip = Integer.parseInt(args[i+1]);
+				break;
+			case "-d":
+				dataFormat = args[i+1];
+				break;
+
+			default:
+			}
+		}
+		String strucFormat=dataFormat;
+		String vocabFormat=dataFormat;
+		System.out.println("seuil : "+ts+"\nmodalité : "+mdef+"\ndegré de flou :"+fuz+"\nnombre lignes : "+n+"\nligne à ignorer : "+skip+"\nformat : "+dataFormat);
+
+
+	}
+}

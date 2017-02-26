@@ -1,0 +1,38 @@
+package lfi.fuzzy.ffs.vocabulary;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+
+import org.apache.commons.csv.CSVParser;
+
+import lfi.fuzzy.ffs.factories.LingVarFact;
+import lfi.fuzzy.ffs.factories.QuantFact;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.linguistic.Quantifier;
+
+public class LingVarsParser {
+	
+	private CSVParser parser;
+	
+	public ArrayList<LingVar<?>> readLingVar(String filename) throws Exception{
+		FileReader fr;
+		final ArrayList<LingVar<?>> result = new ArrayList<LingVar<?>>();
+		try {
+			fr = new FileReader(filename);
+			 BufferedReader br = new BufferedReader(fr);
+			 for (String spec = br.readLine(); spec != null; spec = br.readLine()) {
+				 	LingVar<?> LV = LingVarFact.build(spec);
+		            result.add(LV);
+		        }
+			 br.close();
+		     fr.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+}

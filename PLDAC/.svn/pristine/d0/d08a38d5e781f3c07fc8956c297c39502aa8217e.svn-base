@@ -1,0 +1,13 @@
+Cahier de test 1
+
+Données: test/data1.csv
+Quantificateurs: test/struc/quant1.csv
+Liens:
+LV:
+
+Résultats attendus
+cardSimple
+1. vlTaille : Petit: 9,7388, Moyen: 188,2777
+2. 
+3. 
+

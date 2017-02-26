@@ -1,0 +1,9 @@
+package lfi.fuzzy.tnorms;
+
+public class TLuka extends TNorm{
+TType type=TType.Luka;
+public double calc( double a, double b){
+	return Math.min(a + b - 1,1);
+}
+
+}

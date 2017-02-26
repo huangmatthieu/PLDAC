@@ -1,0 +1,11 @@
+package lfi.fuzzy.lingvar;
+
+/**
+ * Types de Quantificateurs
+ * @author Gilles
+ *
+ */
+public enum QType {
+	Absolute,
+	Relative;
+}

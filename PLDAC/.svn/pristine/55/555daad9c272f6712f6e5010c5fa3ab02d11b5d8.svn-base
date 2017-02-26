@@ -1,0 +1,67 @@
+package lfi.fuzzy.lingvar;
+
+import java.util.ArrayList;
+
+import lfi.fuzzy.partitions.MShips;
+
+/**
+ * 
+ * Variables linguistiques abstraite
+ * @author Matthieu
+ *
+ */
+
+public abstract class LingVar<T> {
+	protected String name;
+	protected ArrayList<String> modalities;
+	protected LVType type;
+	
+	/**
+	 * Accesseur en lecture du nom
+	 * 
+	 * @return name
+	 */
+	
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * Accesseur en écriture du nom
+	 * 
+	 * @param name
+	 */
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	/**
+	 * Accesseur en lecture du type
+	 * 
+	 * @return type
+	 */
+	
+	public LVType getType() {
+		return type;
+	}
+	
+	/**
+	 * Accesseur en écriture du type
+	 * 
+	 * @param type
+	 */
+	
+	public void setType(LVType type) {
+		this.type = type;
+	}
+	
+	/**
+	 * Renvoie l'appartenance de x à 1 ou 2 modalités - le résultat est revnoyé dans l'objet MShips  
+	 * @param x
+	 * @return appartenance à 1 ou 2 modalités
+	 */
+	
+	public abstract MShips mShip(T x);
+
+}

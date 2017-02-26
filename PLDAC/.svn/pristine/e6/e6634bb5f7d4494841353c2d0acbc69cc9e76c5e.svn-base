@@ -1,0 +1,13 @@
+package lfi.fuzzy.lingvar;
+
+/**
+ * 
+ * Quantificateur
+ * 
+ * @author Matthieu
+ *
+ */
+
+public class Quantifier {
+
+}

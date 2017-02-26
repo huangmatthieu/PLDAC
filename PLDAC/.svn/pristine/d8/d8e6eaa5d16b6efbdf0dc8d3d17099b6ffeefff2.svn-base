@@ -1,0 +1,7 @@
+package lfi.fuzzy.tnorms;
+
+public interface TLuka {
+TType type=TType.Luka;
+public double calc( double a, double b);
+
+}

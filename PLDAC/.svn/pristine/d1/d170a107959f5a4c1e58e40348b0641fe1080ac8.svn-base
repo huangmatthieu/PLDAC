@@ -1,0 +1,14 @@
+package lfi.fuzzy.tnorms;
+
+public class TNormFact {
+
+	
+	public static TNorm build(TType type){
+		if(type.equals(TType.Luka))
+			return new TLuka();
+		if(type.equals(TType.Zadeh))
+			return new TZadeh();
+		return new TProba();
+		
+	}
+}

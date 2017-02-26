@@ -1,0 +1,125 @@
+package lfi.fuzzy.ffs.factories;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.regex.Pattern;
+
+import lfi.fuzzy.lingvar.LVType;
+import lfi.fuzzy.lingvar.LVContinuous;
+import lfi.fuzzy.lingvar.LVDiscrete;
+import lfi.fuzzy.lingvar.LingVar;
+import lfi.fuzzy.partitions.FuzzyPart;
+import lfi.fuzzy.partitions.Ruspini;
+import lfi.fuzzy.partitions.UniformRuspini;
+
+/**
+ * 
+ *
+ * 
+ /**
+ ** @author David
+ **/
+
+public class LingVarFact {
+	public static LingVar build(String spec){
+		String[] res=spec.split("[,]");
+		String name = res[0];
+		String type = res[1];
+		System.out.println(res[1]);
+		if(!(type.equals("C") || type.equals("D"))){
+			System.out.println("type inconnu");
+			return null;
+		}
+		if(type.equals("C")){
+			LVContinuous lv = new LVContinuous();
+			FuzzyPart fp;
+			if(res[3].startsWith("min/max")){
+				fp = new UniformRuspini();
+				String[] cut = res[3].split("[ ]");
+				String[] n = cut[1].split("[|]");
+				ArrayList<String> modalites = new ArrayList<String>();
+				if(res[2].isEmpty()){
+					int mdef = 5;
+					for(int j = 0 ; j < mdef ; j++){
+						String str = name+"_"+(j+1);
+						modalites.add(str);
+					}
+				}else{
+					for(String retval : res[2].split("[|]"))
+						modalites.add(retval);
+				}
+				fp.setMin(Integer.parseInt(n[0]));
+				fp.setMax(Integer.parseInt(n[1]));
+				fp.setM(modalites.size());
+				lv.setPart(fp);
+				lv.setName(name);
+				lv.setModalites(modalites);
+				lv.setType(LVType.CONTINUOUS);
+				return lv;
+
+			}else{
+				fp = new Ruspini();
+				ArrayList<Double> KeyPoints = new ArrayList<Double>();
+				for(String retval : res[3].split("[|]")){
+					double val = Double.parseDouble(retval);
+					KeyPoints.add(val);
+				}
+				int m = (KeyPoints.size() + 2) / 2;
+				ArrayList<String> modalites = new ArrayList<String>();
+
+				if(res[2].isEmpty()){
+					for(int j = 0 ; j < m ; j++){
+						String str = name+"_"+(j+1);
+						modalites.add(str);
+					}
+				}else{
+					for(String retval : res[2].split("[|]"))
+						modalites.add(retval);
+				}
+				fp.setM(m);
+				((Ruspini) fp).setKeyPoints(KeyPoints);
+				lv.setPart(fp);
+				lv.setName(name);
+				  lv.setType(LVType.CONTINUOUS);
+				return lv;		
+			}
+			//type vaut D
+		}else{
+			LVDiscrete ld= new LVDiscrete();
+			ld.setName(res[0]);
+			 ld.setType(LVType.DISCRETE);
+			Pattern pp = Pattern.compile("\\W+\\W+");
+			String[] items = pp.split(res[3],10000 );
+			ArrayList<String> modalites = new ArrayList<String>();
+			for(String retval : res[2].split("[|]"))
+				modalites.add(retval);
+			ld.setModalities(modalites);
+			HashMap<String,HashMap<Integer,Double>> nmod_appart=new HashMap<String, HashMap<Integer,Double>>();
+			for(int i = 0 ; i < items.length;i++){
+		 
+				HashMap<Integer, Double> d =new HashMap<Integer,Double>();
+				if(!items[i].contains("|")){
+					int j=i+1;
+					if(j <items.length){
+						while((items[j].contains("|"))&& (items.length>j)){
+							String [] p = items[j].split("[|]");
+							d.put(Integer.parseInt(p[0]), Double.parseDouble(p[1]));
+							j++;
+						}
+						nmod_appart.put(items[i], d);
+						System.out.println(nmod_appart.get(items[i]));
+					}
+
+					System.out.println(items[i]);
+				}else{
+					continue;
+				}
+			}
+			for(int r=0;r<items.length;r++){
+				nmod_appart.get(items[r]);
+			}
+			return ld;
+		}
+	}
+
+}

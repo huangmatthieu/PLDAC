@@ -1,0 +1,24 @@
+#Fichier de configuration test
+
+#Fichier de données
+dataFileName = test/data/data2.csv
+
+#fichier quantifier
+quantifFileName = test/struc/quant.csv
+
+#Fichier de liens entre les colonnes du fichier de données et les variables linguistiques
+linksFileName = test/struc/links2.csv
+
+#Fichier LV
+lvFileName = test/struc/lv.csv
+
+ts = 0.3
+supp =  0.1
+mdef = 5
+fuz = 0.6666666
+n = -1
+skip = 0
+tnorm = Z
+verbBe = sont
+verbHave = ont
+entities = personnes

@@ -1,0 +1,18 @@
+package lfi.fuzzy.general;
+
+public class ZFS extends TwoPointsFS {
+	
+	/** Retourne l'appartenance de x au sef
+	 * @see lfi.fuzzy.general.FuzzySet#mShip(double)
+	 */
+	 
+	public ZFS(double a, double b) {
+		this.a = a;
+		this.b = b;
+	}
+	public double mShip(double x) {
+		if(x <= a)return 1.0;
+		if((x > a) && (x < b)) return (b - x) / (b - a);
+		else return 0.0;
+	}
+}

@@ -1,0 +1,75 @@
+package lfi.fuzzy.lingvar;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import lfi.fuzzy.lingvar.LingVar;
+ 
+import lfi.fuzzy.partitions.MShips;
+
+/**
+ * Variables linguistiques discrètes. <br />
+ * Par exemple, la VL Saison est définie ainsi :
+ * <ul>
+ * <li>"Jan" appartient à "Hiver" à 1</li>
+ * <li>"Fev" appartient à "Hiver" à 1</li>
+ * <li>"Mar" appartient à "Hiver" à 0.6 et à "Printemps" à 0,4</li>
+ * <li>"Avr" appartient à "Printemps" à 1</li>
+ * <li>etc.</li>
+ * </ul>
+ * En supposant que les modalités soient:
+ * <ul>
+ * <li>modalities(0)="Hiver"</li>
+ * <li>modalities(1)="Printemps"</li>
+ * <li>etc.</li>
+ * </ul>
+ * alors la HashMap en interne contient :
+ * <ul>
+ * <li>lvd.Key</li>
+ * </ul>
+ * 
+ * @author Matthieu
+ *
+ */
+
+public class LVDiscrete extends LingVar<String>{
+
+	HashMap<String,HashMap<Integer,Double>> lvd;
+
+	@Override
+	public MShips mShip(String x) {
+		int modalite=modalities.size(),k1 = 0, k2 = 0;
+		double mu1 = 0, mu2 = 0;
+		HashMap<Integer, Double> hm = lvd.get(x);
+		int nMod = hm.size();
+		for(int i=1 ; i <= modalite ; i++){
+			if(hm.containsKey(i)){
+				k1 = i;
+				mu1 = hm.get(k1);
+				if(nMod == 2){
+					k2=k1+1;
+					mu2 = hm.get(k2);
+					break;
+				}
+			}
+		}
+		MShips ms = null;
+		ms.setK1(k1);
+		ms.setK2(k2);
+		ms.setNmod(nMod);
+		ms.setMu1(mu1);
+		ms.setMu2(mu2);
+		return ms;
+	}
+
+	public void setModalities(ArrayList<String> modalites) {	
+		this.modalities=modalites;
+	}
+
+	public ArrayList<String> getModalites() {
+		// TODO Auto-generated method stub
+		return modalities;
+	}
+
+
+}

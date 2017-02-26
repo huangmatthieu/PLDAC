@@ -1,0 +1,40 @@
+package lfi.fuzzy.summaries;
+
+import lfi.fuzzy.ffs.FFS;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.linguistic.Quantifier;
+
+public class QRPSummary extends QPSummary {
+	
+	private LingVar<?> r;
+	private int modR;
+
+	public QRPSummary(Quantifier q, LingVar<?> p, LingVar<?> r, int modP, int modR, double truthVal) {
+		super(q, p, modP, truthVal);
+		this.r = r;
+		this.modR = modR;
+	}
+
+	public void setIndexR(int i){
+		this.i = i;
+	}
+	
+	protected int getIndexR(){
+		return i;
+	}
+	
+	private String getRBloc(){
+		return r.getRForm(i);
+
+	}
+
+	@Override
+	public String getSentence() {
+		return this.getQBloc()+" "+FFS.params.getEntities()+" "+this.getRBloc()+" "+FFS.params.getVerbBe()+" "+this.getPBloc();
+	}
+
+	public LingVar<?> getR() {
+		return r;
+	}
+
+}

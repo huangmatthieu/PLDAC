@@ -1,0 +1,97 @@
+package lfi.fuzzy.ffs;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import lfi.fuzzy.ffs.factories.LingVarFact;
+import lfi.fuzzy.ffs.factories.QuantFact;
+import lfi.fuzzy.linguistic.LVContinuous;
+import lfi.fuzzy.linguistic.LVDiscrete;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.linguistic.Quantifier;
+import lfi.fuzzy.partitions.FuzzyPart;
+import lfi.fuzzy.partitions.UniformRuspini;
+
+/**
+ * Classe principale - contient le main
+ * @author LIP6 / LFI
+ *
+ */
+public class FFS {
+
+	/**
+	 * @param args
+	 * @throws IOException
+	 * @throws NumberFormatException
+	 */
+	
+	/** On initialise avec les valeurs par défaut des parametres **/
+	
+	public static double ts = 0.0;
+	public static int mdef = 5;
+	public static double fuz = 0.5;
+	public static int n = -1;
+	public static int skip = 0;
+	public static String dataFormat ="EN";
+	
+	public static void main(String[] args) throws Exception{
+		int taille=args.length;
+		if (taille % 2 != 0) throw new NumberFormatException();
+		//String filename="Lignes_IDF.csv";
+		//ArrayList<String> res = CSVReader.readFile(filename);
+		
+		/** 
+		 il est nécessaire de spécifier l'option qui correspond au paramètre. Par exemple pour le seuil, -t suivi du seuil.
+		 **/
+
+		for(int i=0 ; i < taille ; i = i+2){
+			switch (args[i])
+			{
+			case "-t":
+				ts = Double.parseDouble(args[i+1]);
+				break;
+			case "-m":
+				mdef = Integer.parseInt(args[i+1]);
+				break;
+			case "-f":
+				fuz = Double.parseDouble(args[i+1]);
+				break;
+			case "-n":
+				n = Integer.parseInt(args[i+1]);
+				break;
+			case "-s":
+				skip = Integer.parseInt(args[i+1]);
+				break;
+			case "-d":
+				dataFormat = args[i+1];
+				break;
+
+			default:
+			}
+		}
+		String strucFormat=dataFormat;
+		String vocabFormat=dataFormat;
+		System.out.println("seuil : "+ts+"\nmodalité : "+mdef+"\ndegré de flou :"+fuz+"\nnombre lignes : "+n+"\nligne à ignorer : "+skip+"\nformat : "+dataFormat);
+
+		String g="Souvent,R,S,0.4|0.2";
+		Quantifier q=QuantFact.build(g);
+		System.out.println(q.getName());
+		System.out.println(q.getType());
+		System.out.println(q.getFs());
+		
+		//String spec = "vlSaison,D,Hiver|Printemps|Ete|Automne,Jan((1|1))Fev((1|1))Mar((1|0.6)(2|0.4))Avr((2|1))";
+		String spec = "vlTaille,C,Petit|Moyen|Grand,90|120|150|180";
+		LingVar<?> lv = LingVarFact.build(spec);
+		ArrayList<String> mod = ((LVContinuous) lv).getModalities();
+		for(String str : mod){
+			System.out.println(str);
+		}
+		
+		System.out.println(lv.getName()+" \n"+lv.getType());
+		FuzzyPart fp = ((LVContinuous) lv).getPart();
+		System.out.println(fp.getClass());
+		System.out.println("la valeur du fuz est : "+((UniformRuspini)fp).getFuz());
+		
+	 
+	}
+}

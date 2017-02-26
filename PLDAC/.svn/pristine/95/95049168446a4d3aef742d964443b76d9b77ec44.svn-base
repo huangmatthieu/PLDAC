@@ -1,0 +1,5 @@
+package lfi.fuzzy.ffs.vocabulary;
+
+public class LingVarsParser {
+
+}

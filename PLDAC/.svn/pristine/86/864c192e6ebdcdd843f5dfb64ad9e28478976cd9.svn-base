@@ -1,0 +1,53 @@
+package lfi.fuzzy.partitions;
+
+/**
+ * Partition uniforme de Ruspini. Les seuls paramètres nécessaires à sa
+ * définition sont le min, le max, le nombre de modalité ainsi qu'un paramètre
+ * de fuzziness, qui décrit à quel point les modalités sont rectangulaires
+ * (fuz=0) ou triangulaires (fuz=1). Les valeurs intermédiaires de fuz
+ * entraînent des modalités trapézoïdales.
+ * 
+ * @author LIP6 / LFI
+ *
+ */
+public class UniformRuspini extends FuzzyPart {
+	private double fuz, nu, delta;
+
+	/**
+	 * Accesseur en écriture à fuz
+	 * 
+	 * @param f
+	 */
+	public void setFuz(double f) {
+		fuz = f;
+		nu = (1 - fuz) * (max - min) / (m - 2);
+		delta = fuz * (max - min) / (m - 1);
+	}
+
+	/**
+	 * Accesseur en lecture au paramètre fuz
+	 * 
+	 * @return
+	 */
+	public double getFuz() {
+		return fuz;
+	}
+
+	/**
+	 * Renvoie l'appartenance de x à la partition en O(1)
+	 * 
+	 * @see lfi.fuzzy.partitions.FuzzyPart#mShip(double)
+	 */
+	public MShips mShip(double x) {
+		int k1;
+
+		int phi = (int) ((x - min) % (nu + delta));
+		k1 = (int) Math.ceil((x - min) / (nu + delta));
+		
+		if (phi >= delta)
+			return result.fill1Mod(k1,  1);
+		else
+			return result.fill2Mod(k1,  1 - (phi / delta));
+	}
+
+}

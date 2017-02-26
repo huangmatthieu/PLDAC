@@ -1,0 +1,8 @@
+vlTaille,C,Petit|Moyen|Grand,90|120|150|180,%entities% petites|%entities% de taille moyennes|%entities% grandes,%verbBe% petites|%verbBe% de taille moyenne|%verbBe% grandes
+vlAge,C,Jeune|Adulte|Senior,25|35|55|65,%entities% jeunes|%entities% adultes|%entities% seniors,%verbBe% des jeunes|%verbBe% des adultes|%verbBe% des seniors
+vlSalaire,C,Faible|Standard|Eleve,min/max 1500|4000,%entities% ayant un salaire %modality%, %verbHave% un salaire %modality%
+vlSexe,D,Homme|Femme,H((1|1))F((2|1)),%entities% masculin|%entities% feminin,%verbBe% des hommes|%verbBe% des femmes
+vlSaison,D,Hiver|Printemps|Ete|Automne,Jan((1|1))Fev((1|1))Mar((1|0.6)(2|0.4))Avr((2|1)),hiver|printemps|été|automne, 
+vlPoids,C,,10|200|250|300, , 
+vlPage,C,Faible|Moyen|Eleve,200|250|300|350,%entities% ayant un nombre de pages %modality%, %verbHave% un nombre de page %modality%
+vlClassement,C, Mauvais|Moyen|Bon|Excellent,2000|6000|10000|14000|18000|22000, %entities% mauvais|%entities% moyen|%entities% bons|%entities% excellents, %verbBe% mauvais|%verbBe% moyen|%verbBe% bons|%verbBe% excellents

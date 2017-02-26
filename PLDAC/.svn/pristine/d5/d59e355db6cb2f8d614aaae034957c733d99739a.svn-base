@@ -1,0 +1,76 @@
+package lfi.fuzzy.linguistic;
+
+import java.util.ArrayList;
+
+import lfi.fuzzy.linguistic.LVType;
+ 
+import lfi.fuzzy.partitions.MShips;
+
+/**
+ * 
+ * Variables linguistiques abstraites
+ * @author Matthieu
+ *
+ */
+
+public abstract class LingVar<T> {
+	protected String name;
+	protected ArrayList<String> modalities;
+	protected LVType type;
+	protected String RForm;
+	protected String PForm;
+
+	/**
+	 * @return the modalities
+	 */
+	public ArrayList<String> getModalities() {
+		return modalities;
+	}
+	/**
+	 * @param modalities the modalities to set
+	 */
+	public void setModalities(ArrayList<String> modalities) {
+		this.modalities = modalities;
+	}
+	/**
+	 * @return the rForm
+	 */
+	public String getRForm() {
+		return RForm;
+	}
+	/**
+	 * @param rForm the rForm to set
+	 */
+	public void setRForm(String rForm) {
+		RForm = rForm;
+	}
+	/**
+	 * @return the pForm
+	 */
+	public String getPForm() {
+		return PForm;
+	}
+	/**
+	 * @param pForm the pForm to set
+	 */
+	public void setPForm(String pForm) {
+		PForm = pForm;
+	}
+
+	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public LVType getType() {
+		return type;
+	}
+	public void setType(LVType type) {
+		this.type = type;
+	}
+	
+	public abstract MShips mShip(T x);
+
+}

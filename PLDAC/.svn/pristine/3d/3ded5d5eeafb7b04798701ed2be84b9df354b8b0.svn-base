@@ -1,0 +1,43 @@
+Réalisé le 02/04/2015 à 16h
+
+Résultat : 22 points de contrôle
+17 ok - 5 ko
+
+Cahier de test 1
+
+Résultats attendus
+cardSimple
+ok - 1. vlTaille : Petit: 0, Moyen: 0.63, Grand: 4.36
+ok - 2. vlAge : Jeune: 2.7 ,Adulte: 0.4 ,Senior: 1.9
+
+cardDouble
+ok - Petit && Jeune : 0.0
+ok - Petit && Adulte : 0.0
+ok - Petit && Senior : 0.0
+ok - Moyen && Jeune : 0.07
+ko - Moyen && Adulte : 0.1
+ko - Moyen && Senior : 0.57
+ok - Grand && Jeune : 2.63
+ok - Grand && Adulte : 0.4
+ok - Grand && Senior : 1.4
+
+
+Cahier de test 2
+
+? - valeurs approximatives des keypoints de vlSalaire : 1500,2333,3166,4000 avec degré de flou initialisé à 2/3 avec noyau et distance inter-noyau =~833
+
+Résultats attendus
+cardSimple
+ko - 1. vlTaille : Petit: 0.85, Moyen: 3.15, Grand: 3.0
+ok - 2. vlSalaire : Faible: 2.76 ,Std: 2.24 ,Eleve: 2
+
+cardDouble
+ok - Petit && Faible : 0.0
+ok - Petit && Standard : 0.0
+ko - Petit && Eleve : 0.85
+ok - Moyen && Faible : 0.7
+ko - Moyen && Standard : 1.35
+ok - Moyen && Eleve : 1.2
+ok - Grand && Faible : 2.1
+ok - Grand && Standard : 0.9
+ok - Grand && Eleve : 0.0

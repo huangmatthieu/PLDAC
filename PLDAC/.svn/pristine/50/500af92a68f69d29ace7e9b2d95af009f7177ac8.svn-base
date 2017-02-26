@@ -1,0 +1,36 @@
+package lfi.fuzzy.ffs.vocabulary;
+
+
+import java.util.*;
+
+import lfi.fuzzy.linguistic.Quantifier;
+import lfi.tools.RewindableCSVParser;
+
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+
+
+public class QuantifParser {
+	private CSVParser parser;
+	
+	public ArrayList<Quantifier> readQuantif(String filename) throws Exception{
+		RewindableCSVParser rparser = new RewindableCSVParser(filename);
+		parser = rparser.getCSVParser();
+		ArrayList<CSVRecord> list = (ArrayList<CSVRecord>) parser.getRecords();
+		ListIterator<CSVRecord> it = list.listIterator();
+		
+		while( it.hasNext()){
+			String str = it.next().toString();
+			StringTokenizer st = new StringTokenizer(str);
+			System.out.println("Nombre de mots:" + st.countTokens());
+			while (st.hasMoreTokens()) 
+				System.out.println(st.nextToken());
+			
+			}			
+		//final ArrayList<Quantifier> result = new ArrayList<Quantifier>();
+		return null;
+
+	}
+
+}

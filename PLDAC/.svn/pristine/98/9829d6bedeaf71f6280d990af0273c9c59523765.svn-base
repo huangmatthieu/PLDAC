@@ -1,0 +1,24 @@
+package lfi.tools;
+
+public class Tools {
+	
+	public static String replace(String originalText,String subStringToFind, String subStringToReplaceWith) {
+		int s = 0;
+		int e = 0;
+
+		StringBuffer newText = new StringBuffer();
+
+		while ((e = originalText.indexOf(subStringToFind, s)) >= 0) {
+
+			newText.append(originalText.substring(s, e));
+			newText.append(subStringToReplaceWith);
+			s = e + subStringToFind.length();
+
+		}
+
+		newText.append(originalText.substring(s));
+		return newText.toString();
+
+	}
+
+}

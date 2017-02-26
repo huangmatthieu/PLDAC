@@ -1,0 +1,186 @@
+/**
+ * 
+ */
+package lfi.fuzzy.ffs;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+import lfi.fuzzy.ffs.vocabulary.Vocabulary;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.linguistic.QType;
+import lfi.fuzzy.linguistic.Quantifier;
+import lfi.fuzzy.partitions.MShips;
+import lfi.fuzzy.summaries.QPSummary;
+import lfi.fuzzy.summaries.Summariser;
+import lfi.fuzzy.summaries.Summary;
+import lfi.fuzzy.tnorms.TNorm;
+import lfi.fuzzy.tnorms.TNormFact;
+import lfi.fuzzy.tnorms.TType;
+import lfi.tools.RewindableCSVParser;
+
+import org.apache.commons.csv.CSVRecord;
+
+/**
+ * Résumeur rapide.
+ * @author Gilles
+ *
+ */
+public class FastSummariser extends Summariser {
+
+	public FastSummariser(Vocabulary v, RewindableCSVParser data) {
+		super(v, data);
+	}
+
+	//Pour avoir le nombre de colonne dans le fichier de donnée
+	private int tailleVL = new Vocabulary(FFS.params.getLvFileName(),FFS.params.getQuantifFileName(),FFS.params.getLinksFileName()).getLinks().size();
+	private double[][] cardSimple = new double[tailleVL][6];
+	private double[][][][] cardDouble = new double[tailleVL][6][tailleVL][6];
+	private int iter = 0;
+	
+	/**
+	 * @return the cardSimple
+	 */
+	public double[][] getCardSimple() {
+		return cardSimple;
+	}
+
+
+	/**
+	 * @return the cardDouble
+	 */
+	public double[][][][] getCardDouble() {
+		return cardDouble;
+	}
+	
+	/**
+	 * @see lfi.fuzzy.summaries.Summariser#summarise()
+	 */
+	@Override
+	public Summary summarise() {
+		try {
+			firstPass();  //Initilisation de cardSimple
+			data.rewind();  //réinitialisation des données
+			secondPass();  //Initialisation de cardDouble
+			data.close();  //fermeture
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Summary result =genSentenceQP();  //génération de phrase "Qx sont P"
+		return result;
+	}
+
+	/**
+	 * 1ère passe
+	 * @throws IOException 
+	 */
+	private void firstPass() throws IOException {
+		ArrayList<CSVRecord> list = (ArrayList<CSVRecord>) data.getCsvParser().getRecords();
+		ListIterator<CSVRecord> it = list.listIterator();
+		iter = 0;
+		while( it.hasNext()){
+			//System.out.println();
+			//System.out.println("Ligne numéro "+(iter+1)+" du fichier de donnée :");
+			iter++;
+			CSVRecord lig = it.next();
+			int taille = lig.size();
+			for(int i = 0 ; i < taille ; i++){
+				LingVar<?> lv = vocab.getLVInCol(i);
+				MShips ms = lv.mShip(lig.get(i).trim());
+				//System.out.println(lv.getName()+" : modalité numéro : "+ms.getK1());
+				cardSimple[i][ms.getK1() - 1] += ms.getMu1();
+				//System.out.println("nombre de modalité :"+ms.getNmod());
+				if (ms.getNmod() == 2)
+					cardSimple[i][ms.getK2() - 1] += ms.getMu2();
+			}
+		}
+	}
+
+	/**
+	 * 2ème passe
+	 * @throws IOException 
+	 */
+	
+	private void secondPass() throws IOException{
+		switch(FFS.params.getTnorm()){
+		case "P":
+			tNorm = TNormFact.build(TType.Proba);
+			break;
+		case "Z":
+			tNorm = TNormFact.build(TType.Zadeh);
+			break;
+		case "L":
+			tNorm = TNormFact.build(TType.Luka);
+			break;
+		default:
+			tNorm = TNormFact.build(TType.Zadeh);
+		}
+
+		ArrayList<CSVRecord> list = (ArrayList<CSVRecord>) data.getCsvParser().getRecords();
+		ListIterator<CSVRecord> it = list.listIterator();
+		while( it.hasNext()){
+			CSVRecord lig = it.next();
+			int taille = lig.size();
+			for(int i = 0 ; i < taille ; i++){
+				LingVar<?> lv1 = vocab.getLVInCol(i);
+				for(int j = i+1 ; j < taille ; j++){	
+					LingVar<?> lv2 = vocab.getLVInCol(j);
+					MShips ms1 = lv1.mShip(lig.get(i).trim());
+					MShips ms2 = lv2.mShip(lig.get(j).trim());
+
+					if ((cardSimple[i][ms1.getK1()] / iter > FFS.params.getSupp()) && (cardSimple[j][ms2.getK1()] / iter > FFS.params.getSupp()))
+						cardDouble[i][ms1.getK1()][j][ms2.getK1()] += tNorm.calc(ms1.getMu1(), ms2.getMu1());
+
+					if ((cardSimple[i][ms1.getK2()] / iter > FFS.params.getSupp()) && (cardSimple[j][ms2.getK1()] / iter > FFS.params.getSupp()) && (ms1.getNmod() == 2))
+						cardDouble[i][ms1.getK2()][j][ms2.getK1()] += tNorm.calc(ms1.getMu2(), ms2.getMu1());
+
+					if ((cardSimple[i][ms1.getK1()] / iter > FFS.params.getSupp()) && (cardSimple[j][ms2.getK2()] / iter > FFS.params.getSupp()) && (ms2.getNmod() == 2))
+						cardDouble[i][ms1.getK1()][j][ms2.getK2()] += tNorm.calc(ms1.getMu1(), ms2.getMu2());
+
+					if ((cardSimple[i][ms1.getK2()] / iter > FFS.params.getSupp()) && (cardSimple[j][ms2.getK2()] / iter > FFS.params.getSupp()) && (ms2.getNmod() == 2) && (ms1.getNmod() == 2))
+						cardDouble[i][ms1.getK2()][j][ms2.getK2()] += tNorm.calc(ms1.getMu2(), ms2.getMu2());
+
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Génération de phrase Qx sont P
+	 * 
+	 */
+	
+	private Summary genSentenceQP(){
+		Summary result = new Summary();
+		ArrayList<Quantifier> q = this.vocab.getQuantifiers();
+		double t;
+		int tailleQ = q.size();
+		//System.out.println("taille de q "+tailleQ);
+		int taille = this.vocab.getLinks().size();
+		for(int x = 0 ; x < tailleQ ; x++){  //Pour chaque quantifier q donné en entrée
+			for(int i = 0 ;i < taille ; i++){  //Pour chaque VL j du fichier de donnée
+				int nbMod = this.vocab.getLVInCol(i).getModalities().size();
+				for(int j = 0 ; j < nbMod ; j++){ //Pour chaque modalité k de j
+					if ( cardSimple[i][j] / iter > FFS.params.getSupp()){ //si support suffisant
+						if(q.get(x).getType().equals(QType.ABSOLUTE))
+							t =  q.get(x).mShip(cardSimple[i][j]);
+						else
+							t = q.get(x).mShip(cardSimple[i][j] / (double)(iter));
+						if( t > FFS.params.getTs()){
+							QPSummary qps = new QPSummary(q.get(x),vocab.getLVInCol(i),j,t);
+							qps.setIndexP(j);
+							result.getQPSummaries().add(qps);
+						}
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+}
+

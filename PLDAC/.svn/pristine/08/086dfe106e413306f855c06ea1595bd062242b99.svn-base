@@ -1,0 +1,41 @@
+package lfi.fuzzy.summaries;
+
+import lfi.fuzzy.ffs.FFS;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.linguistic.Quantifier;
+import lfi.tools.Tools;
+
+public class QRPSummary extends QPSummary {
+	
+	private LingVar<?> r;
+	private int modR;
+
+	public QRPSummary(Quantifier q, LingVar<?> p, LingVar<?> r, int modP, int modR, double truthVal) {
+		super(q, p, modP, truthVal);
+		this.r = r;
+		this.modR = modR;
+	}
+	
+	private String getRBloc(){
+		return r.getRForm(modR);
+
+	}
+
+	@Override
+	public String getSentence(){
+		String sentenceP = this.getPBloc();
+		String newSentenceP = Tools.replace(sentenceP,"%verbBe%",FFS.params.getVerbBe());
+		String newSentenceP2 = Tools.replace(newSentenceP,"%modality%",p.getModalities().get(modP).toLowerCase());
+		String newSentenceP3 = Tools.replace(newSentenceP2,"%verbHave%",FFS.params.getVerbHave());
+		String sentenceR = this.getRBloc();
+		String newSentenceR = Tools.replace(sentenceR,"%entities%",FFS.params.getEntities());
+		String newSentenceR2 = Tools.replace(newSentenceR,"%modality%",r.getModalities().get(modR).toLowerCase());
+		String newSentenceR3 = Tools.replace(newSentenceR2,"%verbHave%",FFS.params.getVerbHave());
+		return getQBloc()+" "+newSentenceR3+" "+newSentenceP3+" ("+truthVal+")";
+	}
+
+	public LingVar<?> getR() {
+		return r;
+	}
+
+}

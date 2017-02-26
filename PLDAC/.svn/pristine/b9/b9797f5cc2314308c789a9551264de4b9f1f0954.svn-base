@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+	<target name="javadoc">
+		<javadoc 
+        	access="public" 
+			additionalparam=" -encoding UTF-8 -charset UTF-8 -docencoding UTF-8" 
+			author="true" 
+			classpath="../lib/commons-csv-1.1.jar" 
+			destdir="../doc/javadoc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="lfi.fuzzy.lingvar,lfi.fuzzy.partitions,lfi.fuzzy.general,lfi.fuzzy.ffs" source="1.7" sourcepath="../src" splitindex="true" use="true" version="true"/>
+	</target>
+</project>

@@ -1,0 +1,40 @@
+package lfi.fuzzy.summaries;
+
+import lfi.fuzzy.linguistic.LingVar;
+
+public class QRPSummary extends QPSummary {
+private LingVar<?> r;
+private int modR;
+
+private String getRBloc(){
+	return null;
+	
+}
+
+@Override
+protected String getQBloc() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+protected String getPBloc() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+@Override
+public String getSentence() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+public LingVar<?> getR() {
+	return r;
+}
+
+public void setR(LingVar<?> r) {
+	this.r = r;
+}
+
+}

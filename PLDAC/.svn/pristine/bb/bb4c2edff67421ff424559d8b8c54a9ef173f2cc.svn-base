@@ -1,0 +1,30 @@
+package lfi.fuzzy.lingvar;
+
+import lfi.fuzzy.partitions.FuzzyPart;
+import lfi.fuzzy.partitions.MShips;
+
+/**
+ * 
+ * Variables linguistiques continues
+ * @author Matthieu
+ *
+ */
+
+public class LVContinuous extends LingVar<Double> {
+	
+	FuzzyPart part;
+
+	/**
+	 * Renvoie l'appartenance de x à la partition
+	 * 
+	 * @see lfi.fuzzy.lingvar.LingVar#mShip(T)
+	 * 
+	 */
+	
+	@Override
+	public MShips mShip(Double x) {
+		return part.mShip(x);
+	}
+	
+
+}

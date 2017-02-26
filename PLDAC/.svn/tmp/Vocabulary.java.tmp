@@ -1,0 +1,61 @@
+package lfi.fuzzy.ffs.vocabulary;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.linguistic.Quantifier;
+
+/**
+ * @author Huang.Matthieu
+ *
+ */
+public class Vocabulary {
+	private ArrayList<LingVar<?>> lingVars;
+	private HashMap<String,LingVar<?>> lingVarsByName;
+	private ArrayList<Quantifier> quantifiers;
+	private ArrayList<LingVar<?>> links;
+
+	
+
+<<<<<<< .mine
+ public Vocabulary(String aLVFile,String aQuantifFile,String aLinkFile){
+		QuantifParser qp = new QuantifParser();
+		LingVarsParser lvp = new LingVarsParser();
+		LinksParser lp = new LinksParser();
+		try {
+			this.lingVars = lvp.readLingVar(aLVFile);
+			this.quantifiers = qp.readQuantif(aQuantifFile);
+			this.links = lp.readLinks(aLinkFile, lingVarsByName);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+ 	
+ 	public LingVar<?> getLV(int i){
+ 		return lingVars.get(i);
+ 	}
+ 	
+ 	public LingVar<?> getLV(String name){
+ 		return lingVarsByName.get(name);
+ 	}
+ 	
+ 	public LingVar<?> getLVInCol(int i){
+ 		return links.get(i);
+ 	}
+}=======
+
+
+	public LingVar getLV(int i){
+		return lingVars.get(i);
+	}
+	
+	public LingVar getLV(String name){
+		return lingVarsByName.get(name);
+	}
+	
+	public LingVar getLVinCol(int i){
+		return links.get(i);
+	}
+	}>>>>>>> .r4316

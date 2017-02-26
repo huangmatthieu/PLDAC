@@ -1,0 +1,8 @@
+package lfi.fuzzy.tnorms;
+
+public interface TProba {
+	TType type=TType.Proba;
+
+	public double calc( double a, double b);
+
+}

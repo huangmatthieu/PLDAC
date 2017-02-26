@@ -1,0 +1,65 @@
+package lfi.fuzzy.ffs.factories;
+
+/**
+ * 
+ * Factorie de Quantificateur
+ * 
+ * @author David
+ *
+ */
+
+import lfi.fuzzy.ffs.FFS;
+import lfi.fuzzy.general.SFS;
+import lfi.fuzzy.general.Trapezoid;
+import lfi.fuzzy.general.ZFS;
+import lfi.fuzzy.linguistic.QType;
+import lfi.fuzzy.linguistic.Quantifier;
+ 
+public class QuantFact {
+	
+	private static int qi=1;
+	
+	public static Quantifier build(String spec) throws Exception{
+		String separateur;
+		if(FFS.dataFormat.equals("EN"))
+			separateur = ",";
+		else
+			separateur = ";";
+		String[] format=spec.split(separateur);				
+		Quantifier q=new Quantifier();
+			if(format[0].equals("")){
+			q.setName("Q_"+qi);
+			qi++;
+		}else{
+		q.setName(format[0].trim());
+		}
+	switch(format[1].trim().toLowerCase()){		 
+	case "r":
+		q.setType(QType.RELATIVE);				 
+		break;
+	 case "a":
+		 q.setType(QType.ABSOLUTE);
+		break;
+	 
+	 default:
+		 throw new Exception("Type inconnu : " + spec);
+	 }
+	switch(format[2].trim().toLowerCase()){
+	case "s":
+		String[] valeur=format[3].split("[|]");
+		q.setFs(new SFS(Double.parseDouble(valeur[0]),Double.parseDouble(valeur[1])));
+	break;
+	case "z":
+		String[] valeur1=format[3].split("[|]");
+		q.setFs(new ZFS(Double.parseDouble(valeur1[0]),Double.parseDouble(valeur1[1])));
+		break;
+	case "t":
+		String[] valeur11=format[3].split("[|]");
+		q.setFs(new Trapezoid(Double.parseDouble(valeur11[0]),Double.parseDouble(valeur11[0]),Double.parseDouble(valeur11[0]),Double.parseDouble(valeur11[0])));
+		break;
+	default :
+		throw new Exception("forme inconnue : " + spec);
+	}
+	return q;
+}
+}

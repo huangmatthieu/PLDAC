@@ -1,0 +1,13 @@
+package lfi.fuzzy.tnorms;
+
+public class TNorm implements TZadeh, TProba,TLuka {
+
+	protected TType type;
+
+	@Override
+	public double calc(double a, double b) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+}

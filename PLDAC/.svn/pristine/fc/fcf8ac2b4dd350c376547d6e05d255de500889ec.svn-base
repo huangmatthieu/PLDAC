@@ -1,0 +1,129 @@
+package lfi.fuzzy.ffs.factories;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.regex.Pattern;
+
+import lfi.fuzzy.lingvar.LVContinuous;
+import lfi.fuzzy.lingvar.LVDiscrete;
+import lfi.fuzzy.lingvar.LingVar;
+import lfi.fuzzy.partitions.FuzzyPart;
+import lfi.fuzzy.partitions.Ruspini;
+import lfi.fuzzy.partitions.UniformRuspini;
+
+/**
+ * 
+ *
+ * 
+ * @author David
+ *
+ */
+
+
+
+/**
+ * Méthode factorie qui crée des instances LingVarFact
+ * Elle prend un argument spec qui est une ligne d'un fichier .csv de la forme(Nom,Type,Modalités,Definition)
+ * Si le type est C on renvoi un objet LVContinuous ayant un attribut une partition de Ruspini uniforme ou non(dépendant si il y min/max dans la définition
+ *Si c'est Ruspini uniforme on renseigne les attributs m min et max de part de l'objet LVContinuous 
+ *
+ * 
+ * 
+ *
+ */
+public class LingVarFact {
+	public static LingVar build(String spec){
+		String[] p=spec.split("[,]");
+		String[] mod=p[3].split("[|]"); // Split de definition 
+		 		int i=0;
+		if(p[1]=="C"){  // TYPE C ou D 
+			LVContinuous l=new LVContinuous();
+			l.setName(p[0]);    // NOM 
+			if(p[3].indexOf("min/max")!=-1){ // VL Ruspini Uniforme
+				l.setPart(new UniformRuspini());
+				String[] min_max=p[3].split("[ ]");   // si il y min max on prend les valeurs associés
+				String[] mini_maxi=min_max[2].split("[|]");    //   On met ces valeurs dans mini_maxi
+ 				l.getPart().setMin(Integer.parseInt(mini_maxi[0]));   // on les affecte apres le savoir casté en int    
+				l.getPart().setMax(Integer.parseInt(mini_maxi[1])); 
+				l.getPart().setM(p[2].split("[|]").length);    // nb valeurs de modalités
+				
+			
+				//si modalité renseigné 
+				if(p[2]!=null){
+					 String[] modalit= p[2].split("[|]");
+					 System.out.println(modalit[1]);
+					 String s;
+						ArrayList<String> res =new ArrayList<String>();
+						for(i = 0;i< modalit.length;i++) {
+							s=modalit[i];
+							res.add(s);
+						}
+				}else{ // si non renseigné mettre vlNom_i
+					String[] nb_modalite= p[3].split("[|]");
+					ArrayList<String> res = null;
+					for(  i=0;i<nb_modalite.length;i++){
+						String r=l.getName()+"_"+i;
+						res.add(r);
+					}
+					l.setModalities(res);
+					
+				}
+				
+ 
+				//Calcul du coefficient de fuzziness
+			/*	ArrayList<String> p1=l.getModalities();
+				int nb_modalite=p1.size();
+			    double a_i=Math.abs(l.getPart().getMax()/nb_modalite);			    
+			    double[][] mat=new double[(int) nb_part][1];
+					    
+				if(l.getModalities()[2]==l.getModalities()
+			
+				*/
+  	
+			}else{  // VL Ruspini contient les points clés
+				 
+				l.setPart(new  Ruspini());
+				for( i=0;i<mod.length;i++)	l.getPart().setkeyPoints(i,mod[i]); // points clés		
+				//si modalité renseigné 
+				if(p[2]!=null){
+					String[] modalit= p[2].split("[|]");
+					ArrayList<String> res = null;
+					for(  i=0;i< modalit.length;i++)  res.add(modalit[i]);
+					l.setModalities(res);
+				}
+				return l;
+			}
+		}else{
+		 if(p[1]=="D"){   // VL Discrete
+			LVDiscrete ld=new LVDiscrete();
+			ld.setName(p[0]);   
+			
+			String[] modalit= p[2].split("[|]");
+			ArrayList<String> res = null;
+			for(  i=0;i< modalit.length;i++)  res.add(modalit[i]);
+			ld.setModalities(res);
+	 
+			
+			   HashMap<Integer, Double> d =new HashMap<Integer,Double>();
+			      String[] g = null;
+			      Pattern pp = Pattern.compile("\\W+\\W+");
+			      HashMap<String, HashMap<Integer,Double>> nmod_appart=new HashMap<String, HashMap<Integer,Double>>();
+			      String[] items = pp.split(p[3], 10000 );
+		 
+			      for(int j=0;j<items.length;j=j+2){
+			    	  i=j+1;
+			    	  if(i<items.length){
+			    		  String[] s=items[i].split("[|]");
+			    		  d.put(Integer.parseInt(s[0]),Double.parseDouble(s[1]));
+			    		  nmod_appart.put(items[j], d);
+			    	  }
+			      }
+		 return ld;
+		 }	
+		}
+		return null;
+	}
+}
+		
+		 
+

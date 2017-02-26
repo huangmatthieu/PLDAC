@@ -1,0 +1,107 @@
+/**
+ * 
+ */
+package lfi.fuzzy.ffs;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+import lfi.fuzzy.ffs.vocabulary.Vocabulary;
+import lfi.fuzzy.linguistic.LVContinuous;
+import lfi.fuzzy.linguistic.LVDiscrete;
+import lfi.fuzzy.linguistic.LVType;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.partitions.MShips;
+import lfi.fuzzy.summaries.Summariser;
+import lfi.fuzzy.summaries.Summary;
+import lfi.tools.RewindableCSVParser;
+
+import org.apache.commons.csv.CSVRecord;
+
+/**
+ * Résumeur rapide.
+ * @author Gilles
+ *
+ */
+public class FastSummariser extends Summariser {
+
+	public FastSummariser(Vocabulary v, RewindableCSVParser data) {
+		super(v, data);
+		// TODO Auto-generated constructor stub
+	}
+	//Pour avoir le nombre de colonne dans le fichier de donnée
+	private int tailleVL = new Vocabulary(FFS.params.getLvFileName(),FFS.params.getQuantifFileName(),FFS.params.getLinksFileName()).getLinks().size();
+	private double[][] cardSimple = new double[tailleVL][6];
+	private double[][][][] cardDouble = new double[tailleVL][6][tailleVL][6];
+	/**
+	 * @see lfi.fuzzy.summaries.Summariser#summarise()
+	 */
+	@Override
+	public Summary summarise() {
+		Summary result = new Summary();
+
+		try {
+			firstPass();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	/**
+	 * 1ère passe
+	 * @throws IOException 
+	 */
+	private void firstPass() throws IOException {
+		ArrayList<CSVRecord> list = (ArrayList<CSVRecord>) data.getCsvParser().getRecords();
+		ListIterator<CSVRecord> it = list.listIterator();
+		int iter = 0;
+		while( it.hasNext()){
+			System.out.println();
+			System.out.println("Ligne numéro "+(iter+1)+" du fichier de donnée :");
+			iter++;
+			CSVRecord lig = it.next();
+			int taille = lig.size();
+			for(int i = 0 ; i < taille ; i++){
+				LingVar<?> lv = vocab.getLVInCol(i);
+				MShips ms = lv.mShip(lig.get(i).trim());
+				System.out.println(lv.getName()+" : modalité numéro : "+ms.getK1());
+				cardSimple[i][ms.getK1() - 1] += ms.getMu1();
+				System.out.println("nombre de modalité :"+ms.getNmod());
+				if (ms.getNmod() == 2)
+					cardSimple[i][ms.getK2() - 1] += ms.getMu2();
+			}
+		}
+		System.out.println();
+		System.out.println("tableau de cardSimple (VL en ligne et modalité en colonne) : ");
+		System.out.println();
+		for(int i = 0 ; i < cardSimple.length ; i++){
+			for(int j = 0 ; j < cardSimple[0].length ; j++){
+				System.out.print(cardSimple[i][j]+" ,");
+			}
+			System.out.println();
+		}
+	}
+
+	private void secondPass() throws IOException{
+		ArrayList<CSVRecord> list = (ArrayList<CSVRecord>) data.getCsvParser().getRecords();
+		ListIterator<CSVRecord> it = list.listIterator();
+		for(int k=0;k<tailleVL; k++){
+			for(int j=0;j<6;j++){
+				for(int k1=0;k1<tailleVL; k1++){
+					for(int j1=0;j1<6;j1++){
+						if(j<j1){
+					
+							cardDouble[j][k][j1][k1]=0;
+						}
+					}
+				}
+			}
+	
+		}
+	}
+}
+

@@ -1,0 +1,10 @@
+SELECT amzlivre.nbpages, sum( 100 - AmzLivreClassement.Rang ) AS Point
+FROM AmzClassement, AmzObjTag, AmzTag, AmzLivre, AmzLivreClassement
+WHERE AmzClassement.Id = AmzObjTag.IdObj
+AND AmzObjTag.IdTag = AmzTag.Id
+AND AmzLivreClassement.IdClassement = AmzClassement.Id
+AND AmzLivreClassement.IdLivre = AmzLivre.Id
+AND TypeObj = 'AmzClassement'
+AND AmzTag.Value = "Hebdomadaire"
+GROUP BY amzlivre.IdLivre
+ORDER BY Point DESC 

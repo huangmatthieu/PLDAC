@@ -1,0 +1,141 @@
+package lfi.fuzzy.ffs.factories;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.regex.Pattern;
+
+import lfi.fuzzy.ffs.FFS;
+import lfi.fuzzy.lingvar.LVType;
+import lfi.fuzzy.lingvar.LVContinuous;
+import lfi.fuzzy.lingvar.LVDiscrete;
+import lfi.fuzzy.lingvar.LingVar;
+import lfi.fuzzy.partitions.FuzzyPart;
+import lfi.fuzzy.partitions.Ruspini;
+import lfi.fuzzy.partitions.UniformRuspini;
+
+/**
+ * 
+ *
+ * 
+ /**
+ ** @author David
+ **/
+
+public class LingVarFact {
+	public static LingVar<?> build(String spec) throws Exception{
+		String separateur;
+		if(FFS.dataFormat.equals("EN"))
+			separateur =",";
+		else
+			separateur = ";";
+		String[] res=spec.split(separateur);
+		String name = res[0];
+		String type = res[1];
+		if(!(type.equals("C") || type.equals("D")))throw new Exception("type inconnu");
+		if(type.equals("C")){
+			LVContinuous lv = new LVContinuous();
+			FuzzyPart fp;
+			if(res[3].startsWith("min/max")){
+				fp = new UniformRuspini();
+				String[] cut = res[3].split("[ ]");
+				String[] n = cut[1].split("[|]");
+				int min = Integer.parseInt(n[0]), max = Integer.parseInt(n[1]);
+				if( max < min)throw new Exception("Erreur ! le max est plus petit que le min");
+				ArrayList<String> modalites = new ArrayList<String>();
+				if(res[2].isEmpty()){
+					int mdef = FFS.mdef;
+					for(int j = 0 ; j < mdef ; j++){
+						String str = name+"_"+(j+1);
+						modalites.add(str);
+					}
+				}else{
+					for(String retval : res[2].split("[|]"))
+						modalites.add(retval);
+				}
+				fp.setMin(min);
+				fp.setMax(max);
+				fp.setM(modalites.size());
+				lv.setPart(fp);
+				lv.setName(name);
+				lv.setModalites(modalites);
+				lv.setType(LVType.CONTINUOUS);
+				return lv;
+
+			}else{
+				fp = new Ruspini();
+				ArrayList<Double> KeyPoints = new ArrayList<Double>();
+				for(String retval : res[3].split("[|]")){
+					double val = Double.parseDouble(retval);
+					KeyPoints.add(val);
+				}
+				int m = (KeyPoints.size() + 2) / 2;
+				ArrayList<String> modalites = new ArrayList<String>();
+
+				if(res[2].isEmpty()){
+					for(int j = 0 ; j < m ; j++){
+						String str = name+"_"+(j+1);
+						modalites.add(str);
+					}
+				}else{
+					for(String retval : res[2].split("[|]"))
+						modalites.add(retval);
+				}
+				if(KeyPoints.size() != 2 * (modalites.size() - 1))throw new Exception("nombre de valeur different de 2(m-1)");
+				fp.setM(m);
+				fp.setMin(KeyPoints.get(0));
+				fp.setMax(KeyPoints.get(KeyPoints.size() - 1));
+				((Ruspini) fp).setKeyPoints(KeyPoints);
+				lv.setPart(fp);
+				lv.setName(name);
+				lv.setModalites(modalites);
+				lv.setType(LVType.CONTINUOUS);
+				return lv;		
+			}
+			//type vaut D
+		}else{
+			LVDiscrete ld= new LVDiscrete();
+			ld.setName(res[0]);
+			ld.setType(LVType.DISCRETE);
+			Pattern pp = Pattern.compile("\\W+\\W+");
+			String[] items = pp.split(res[3],10000 );
+			ArrayList<String> modalites = new ArrayList<String>();
+			for(String retval : res[2].split("[|]"))
+				modalites.add(retval);
+			ld.setModalities(modalites);
+			HashMap<String,HashMap<Integer,Double>> nmod_appart=new HashMap<String, HashMap<Integer,Double>>();
+			for(int i = 0 ; i < items.length;i++){
+				HashMap<Integer, Double> d =new HashMap<Integer,Double>();
+				if(!items[i].contains("|")){
+					System.out.println(items[i]);
+
+					int j=i+1;
+					if(j <items.length){
+						while((items[j].contains("|"))&& (items.length>j)){
+							String [] p = items[j].split("[|]");
+							d.put(Integer.parseInt(p[0]), Double.parseDouble(p[1]));
+							j++;
+						}
+						nmod_appart.put(items[i], d);
+						System.out.println(nmod_appart.get(items[i]));
+						HashMap<Integer,Double> list = nmod_appart.get(items[i]);
+						Set<Integer> cle = list.keySet();
+						double somme = 0;
+						for(int z = 0 ; z < cle.size() ; z++){
+							if((list.get(cle.toArray()[z]) < 0) || (list.get(cle.toArray()[z]) > 1)) throw new Exception("Appartenance doit etre compris entre 0 et 1");
+							if(((int)cle.toArray()[z] < 1) || ((int)cle.toArray()[z] > modalites.size()))throw new Exception("Numéro de modalité doit etre compris entre 1 et m !");
+							somme += list.get(cle.toArray()[z]);
+						}
+						if(somme != 1.0)throw new Exception("Erreur !La somme des appartenance est différente de 1 pour une valeur de l'univers");
+					}
+
+				}else{
+					continue;
+				}
+			}
+			ld.setLvd(nmod_appart);
+			return ld;
+		}
+	}
+
+}

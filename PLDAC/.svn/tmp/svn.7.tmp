@@ -1,0 +1,75 @@
+package lfi.tools;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.apache.commons.csv.*;
+
+public class RewindableCSVParser {
+	private String filename;
+	private FileReader in;;
+	private BufferedReader csvbr;
+	
+	
+	public RewindableCSVParser(String filename) {
+		this.filename = filename;
+		try {
+			in = new FileReader(filename);
+			csvbr = new BufferedReader(in) ;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+
+	/**
+	 * @return the in
+	 */
+	public FileReader getIn() {
+		return in;
+	}
+
+	/**
+	 * @param in the in to set
+	 */
+	public void setIn(FileReader in) {
+		this.in = in;
+	}
+
+
+	public BufferedReader getCSVParser() {
+		return csvbr;
+	}
+	
+
+	public void rewind(){
+
+		try {
+			in.close();
+			csvbr.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		createFileReader();
+	}
+	
+	/**
+	 * Méthode privée pour créer le FileReader
+	 */
+	private void createFileReader() {
+		try {
+			in = new FileReader(this.filename);
+			csvbr = new BufferedReader(this.in);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}	
+
+
+	}
+	
+
+}

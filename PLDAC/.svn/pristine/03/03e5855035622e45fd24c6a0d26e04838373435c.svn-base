@@ -1,0 +1,37 @@
+package lfi.fuzzy.ffs.vocabulary;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import lfi.fuzzy.ffs.factories.QuantFact;
+import lfi.fuzzy.linguistic.LingVar;
+import lfi.fuzzy.linguistic.Quantifier;
+
+import org.apache.commons.csv.CSVParser;
+
+public class QuantifParser {
+	private CSVParser parser;
+	
+	public ArrayList<Quantifier> readQuantif(String filename) throws Exception{
+		FileReader fr;
+		final ArrayList<Quantifier> result = new ArrayList<Quantifier>();
+		try {
+			fr = new FileReader(filename);
+			 BufferedReader br = new BufferedReader(fr);
+			 for (String spec = br.readLine(); spec != null; spec = br.readLine()) {
+				 	Quantifier quant = QuantFact.build(spec);
+		            result.add(quant);
+		        }
+			 br.close();
+		     fr.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+}

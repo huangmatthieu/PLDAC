@@ -1,0 +1,31 @@
+package lfi.fuzzy.ffs.vocabulary;
+
+
+import java.io.BufferedReader;
+import java.util.*;
+import lfi.fuzzy.ffs.factories.QuantFact;
+import lfi.fuzzy.linguistic.Quantifier;
+import lfi.tools.RewindableCSVParser;
+
+
+
+
+public class QuantifParser {
+	private BufferedReader parser;
+
+	public ArrayList<Quantifier> readQuantif(String filename) throws Exception{
+		RewindableCSVParser rparser = new RewindableCSVParser(filename);
+		parser = rparser.getCSVParser();
+		final ArrayList<Quantifier> result = new ArrayList<Quantifier>();
+		final ArrayList<String> ligfic = new ArrayList<String>();
+		for (String line = parser.readLine(); line != null; line = parser.readLine()) {
+			ligfic.add(line);
+		}
+		for(int i = 0 ; i < ligfic.size() ; i++){
+			result.add(QuantFact.build(ligfic.get(i)));
+		}	
+		rparser.getIn().close();
+		rparser.getCSVParser().close();
+		return result;
+	}
+}
